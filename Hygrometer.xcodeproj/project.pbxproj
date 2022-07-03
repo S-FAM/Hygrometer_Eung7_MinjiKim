@@ -16,6 +16,7 @@
 		A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */; };
 		A51081F42871C12200A8D648 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F32871C12200A8D648 /* Alamofire */; };
 		A51081F72871C12E00A8D648 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F62871C12E00A8D648 /* SnapKit */; };
+		E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E5B151932871C8610028EFAE /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		A51081E72871BF5C00A8D648 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51081EA2871BF5C00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51081EC2871BF5C00A8D648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5B151932871C8610028EFAE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.release.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -57,6 +59,7 @@
 		A51081D22871BF5A00A8D648 = {
 			isa = PBXGroup;
 			children = (
+				E5B151932871C8610028EFAE /* .swiftlint.yml */,
 				A51081DD2871BF5A00A8D648 /* Hygrometer */,
 				A51081DC2871BF5A00A8D648 /* Products */,
 				FCC403BD1124B23091AC3389 /* Pods */,
@@ -147,8 +150,8 @@
 			);
 			mainGroup = A51081D22871BF5A00A8D648;
 			packageReferences = (
-				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
-				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = A51081DC2871BF5A00A8D648 /* Products */;
 			projectDirPath = "";
@@ -164,6 +167,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */,
 				A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */,
 				A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */,
 				A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */,
@@ -461,7 +465,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+		A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -469,7 +473,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
+		A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -482,12 +486,12 @@
 /* Begin XCSwiftPackageProductDependency section */
 		A51081F32871C12200A8D648 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			package = A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
 		A51081F62871C12E00A8D648 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
+			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
