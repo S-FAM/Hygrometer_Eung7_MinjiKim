@@ -7,15 +7,20 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */; };
 		A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081DE2871BF5A00A8D648 /* AppDelegate.swift */; };
 		A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E02871BF5A00A8D648 /* SceneDelegate.swift */; };
 		A51081E32871BF5A00A8D648 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* ViewController.swift */; };
 		A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E42871BF5A00A8D648 /* Main.storyboard */; };
 		A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A51081E72871BF5C00A8D648 /* Assets.xcassets */; };
 		A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */; };
+		A51081F42871C12200A8D648 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F32871C12200A8D648 /* Alamofire */; };
+		A51081F72871C12E00A8D648 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F62871C12E00A8D648 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hygrometer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.debug.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.debug.xcconfig"; sourceTree = "<group>"; };
 		A51081DB2871BF5A00A8D648 /* Hygrometer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hygrometer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51081DE2871BF5A00A8D648 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A51081E02871BF5A00A8D648 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +29,7 @@
 		A51081E72871BF5C00A8D648 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51081EA2871BF5C00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51081EC2871BF5C00A8D648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.release.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +37,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A51081F42871C12200A8D648 /* Alamofire in Frameworks */,
+				A51081F72871C12E00A8D648 /* SnapKit in Frameworks */,
+				05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7133A8999D609617F0FC57BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A51081D22871BF5A00A8D648 = {
 			isa = PBXGroup;
 			children = (
 				A51081DD2871BF5A00A8D648 /* Hygrometer */,
 				A51081DC2871BF5A00A8D648 /* Products */,
+				FCC403BD1124B23091AC3389 /* Pods */,
+				7133A8999D609617F0FC57BE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,6 +86,15 @@
 			path = Hygrometer;
 			sourceTree = "<group>";
 		};
+		FCC403BD1124B23091AC3389 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */,
+				E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,15 +102,22 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A51081EF2871BF5C00A8D648 /* Build configuration list for PBXNativeTarget "Hygrometer" */;
 			buildPhases = (
+				6931BA329901693937441807 /* [CP] Check Pods Manifest.lock */,
 				A51081D72871BF5A00A8D648 /* Sources */,
 				A51081D82871BF5A00A8D648 /* Frameworks */,
 				A51081D92871BF5A00A8D648 /* Resources */,
+				A51081F92871C1D500A8D648 /* SwiftLint */,
+				D33607B657F5D4E49499204D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Hygrometer;
+			packageProductDependencies = (
+				A51081F32871C12200A8D648 /* Alamofire */,
+				A51081F62871C12E00A8D648 /* SnapKit */,
+			);
 			productName = Hygrometer;
 			productReference = A51081DB2871BF5A00A8D648 /* Hygrometer.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +146,10 @@
 				Base,
 			);
 			mainGroup = A51081D22871BF5A00A8D648;
+			packageReferences = (
+				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */,
+				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+			);
 			productRefGroup = A51081DC2871BF5A00A8D648 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -132,6 +171,66 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6931BA329901693937441807 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hygrometer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A51081F92871C1D500A8D648 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		D33607B657F5D4E49499204D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A51081D72871BF5A00A8D648 /* Sources */ = {
@@ -282,6 +381,7 @@
 		};
 		A51081F02871BF5C00A8D648 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -310,6 +410,7 @@
 		};
 		A51081F12871BF5C00A8D648 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -358,6 +459,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A51081F32871C12200A8D648 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire.git" */;
+			productName = Alamofire;
+		};
+		A51081F62871C12E00A8D648 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A51081D32871BF5A00A8D648 /* Project object */;
 }
