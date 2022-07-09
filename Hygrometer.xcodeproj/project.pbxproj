@@ -10,12 +10,14 @@
 		05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */; };
 		A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081DE2871BF5A00A8D648 /* AppDelegate.swift */; };
 		A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E02871BF5A00A8D648 /* SceneDelegate.swift */; };
-		A51081E32871BF5A00A8D648 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* ViewController.swift */; };
-		A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E42871BF5A00A8D648 /* Main.storyboard */; };
+		A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* HomeViewController.swift */; };
 		A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A51081E72871BF5C00A8D648 /* Assets.xcassets */; };
 		A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */; };
 		A51081F42871C12200A8D648 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F32871C12200A8D648 /* Alamofire */; };
 		A51081F72871C12E00A8D648 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F62871C12E00A8D648 /* SnapKit */; };
+		E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */; };
+		E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */; };
+		E5A2E6C72879A52A00C9D5EB /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */; };
 		E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E5B151932871C8610028EFAE /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
@@ -25,11 +27,13 @@
 		A51081DB2871BF5A00A8D648 /* Hygrometer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hygrometer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51081DE2871BF5A00A8D648 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A51081E02871BF5A00A8D648 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A51081E22871BF5A00A8D648 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A51081E52871BF5A00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A51081E22871BF5A00A8D648 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A51081E72871BF5C00A8D648 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51081EA2871BF5C00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51081EC2871BF5C00A8D648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
+		E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5B151932871C8610028EFAE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.release.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -78,15 +82,25 @@
 		A51081DD2871BF5A00A8D648 /* Hygrometer */ = {
 			isa = PBXGroup;
 			children = (
+				E5A2E6C12879925400C9D5EB /* Home */,
 				A51081DE2871BF5A00A8D648 /* AppDelegate.swift */,
 				A51081E02871BF5A00A8D648 /* SceneDelegate.swift */,
-				A51081E22871BF5A00A8D648 /* ViewController.swift */,
-				A51081E42871BF5A00A8D648 /* Main.storyboard */,
+				E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */,
 				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
 				A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */,
 				A51081EC2871BF5C00A8D648 /* Info.plist */,
 			);
 			path = Hygrometer;
+			sourceTree = "<group>";
+		};
+		E5A2E6C12879925400C9D5EB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A51081E22871BF5A00A8D648 /* HomeViewController.swift */,
+				E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */,
+				E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		FCC403BD1124B23091AC3389 /* Pods */ = {
@@ -170,7 +184,6 @@
 				E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */,
 				A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */,
 				A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */,
-				A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,23 +254,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A51081E32871BF5A00A8D648 /* ViewController.swift in Sources */,
+				A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */,
+				E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */,
 				A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */,
 				A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */,
+				E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */,
+				E5A2E6C72879A52A00C9D5EB /* HomeCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A51081E42871BF5A00A8D648 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A51081E52871BF5A00A8D648 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -396,7 +404,6 @@
 				INFOPLIST_FILE = Hygrometer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,7 +432,6 @@
 				INFOPLIST_FILE = Hygrometer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
