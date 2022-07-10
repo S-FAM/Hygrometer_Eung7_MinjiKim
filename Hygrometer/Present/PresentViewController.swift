@@ -13,6 +13,7 @@ class PresentViewController: UIViewController {
     let button = UIButton()
     button.setImage(UIImage(systemName: "xmark"), for: .normal)
     button.tintColor = .black
+    button.addTarget(self, action: #selector(dismissSelf), for: .touchUpInside)
 
     return button
   }()
@@ -98,6 +99,10 @@ class PresentViewController: UIViewController {
       searchBar.isHidden = true
       titleLabel.isHidden = false
     }
+  }
+
+  @objc func dismissSelf() {
+    dismiss(animated: true)
   }
 }
 

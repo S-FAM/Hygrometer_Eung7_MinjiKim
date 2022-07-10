@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
         button.tintColor = .white
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
         button.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+        button.addTarget(self, action: #selector(showSearchVC), for: .touchUpInside)
 
         return button
     }()
@@ -94,6 +95,7 @@ class HomeViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "chevron.forward"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(showBookmarkVC), for: .touchUpInside)
 
         return button
     }()
@@ -197,6 +199,18 @@ class HomeViewController: UIViewController {
         let section = createSection()
 
         return UICollectionViewCompositionalLayout(section: section, configuration: config)
+    }
+
+    @objc func showSearchVC() {
+      let searchVC = PresentViewController(sceneType: .searh)
+      searchVC.modalPresentationStyle = .currentContext
+      present(searchVC, animated: true)
+    }
+
+    @objc func showBookmarkVC() {
+      let bookmarkVC = PresentViewController(sceneType: .bookmark)
+      bookmarkVC.modalPresentationStyle = .currentContext
+      present(bookmarkVC, animated: true)
     }
 }
 
