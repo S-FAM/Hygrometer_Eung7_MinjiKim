@@ -11,6 +11,8 @@
 		A508BB5D287A560300A37162 /* PresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB5C287A560300A37162 /* PresentViewController.swift */; };
 		A508BB64287A5C8D00A37162 /* PresentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB63287A5C8D00A37162 /* PresentTableViewCell.swift */; };
 		A508BB66287A6B4300A37162 /* SceneType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB65287A6B4300A37162 /* SceneType.swift */; };
+		A508BB68287A768A00A37162 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB67287A768A00A37162 /* SettingsViewController.swift */; };
+		A508BB6B287A7AA600A37162 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */; };
 		A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081DE2871BF5A00A8D648 /* AppDelegate.swift */; };
 		A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E02871BF5A00A8D648 /* SceneDelegate.swift */; };
 		A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* HomeViewController.swift */; };
@@ -30,6 +32,8 @@
 		A508BB5C287A560300A37162 /* PresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentViewController.swift; sourceTree = "<group>"; };
 		A508BB63287A5C8D00A37162 /* PresentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTableViewCell.swift; sourceTree = "<group>"; };
 		A508BB65287A6B4300A37162 /* SceneType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneType.swift; sourceTree = "<group>"; };
+		A508BB67287A768A00A37162 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		A51081DB2871BF5A00A8D648 /* Hygrometer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hygrometer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51081DE2871BF5A00A8D648 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A51081E02871BF5A00A8D648 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +80,15 @@
 			path = Present;
 			sourceTree = "<group>";
 		};
+		A508BB69287A768D00A37162 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A508BB67287A768A00A37162 /* SettingsViewController.swift */,
+				A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		A51081D22871BF5A00A8D648 = {
 			isa = PBXGroup;
 			children = (
@@ -102,6 +115,7 @@
 				A51081E02871BF5A00A8D648 /* SceneDelegate.swift */,
 				E5A2E6C12879925400C9D5EB /* Home */,
 				A508BB5E287A560900A37162 /* Present */,
+				A508BB69287A768D00A37162 /* Settings */,
 				E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */,
 				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
 				A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */,
@@ -274,8 +288,10 @@
 				A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */,
 				A508BB64287A5C8D00A37162 /* PresentTableViewCell.swift in Sources */,
 				A508BB5D287A560300A37162 /* PresentViewController.swift in Sources */,
+				A508BB68287A768A00A37162 /* SettingsViewController.swift in Sources */,
 				E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */,
 				A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */,
+				A508BB6B287A7AA600A37162 /* SettingsTableViewCell.swift in Sources */,
 				A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */,
 				A508BB66287A6B4300A37162 /* SceneType.swift in Sources */,
 				E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */,
