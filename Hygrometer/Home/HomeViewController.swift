@@ -65,7 +65,7 @@ class HomeViewController: UIViewController {
 
     lazy var bearImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "곰습이 이미지")
+        imageView.image = UIImage(named: "bear")
 
         return imageView
     }()

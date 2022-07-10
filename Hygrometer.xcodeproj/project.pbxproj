@@ -89,6 +89,31 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		A508BB6C287A882E00A37162 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		A508BB6D287A89DD00A37162 /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
+		A508BB6E287A89E300A37162 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A508BB6C287A882E00A37162 /* Extension */,
+				A508BB6D287A89DD00A37162 /* Asset */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		A51081D22871BF5A00A8D648 = {
 			isa = PBXGroup;
 			children = (
@@ -111,13 +136,12 @@
 		A51081DD2871BF5A00A8D648 /* Hygrometer */ = {
 			isa = PBXGroup;
 			children = (
-				A51081DE2871BF5A00A8D648 /* AppDelegate.swift */,
-				A51081E02871BF5A00A8D648 /* SceneDelegate.swift */,
+				A508BB6E287A89E300A37162 /* Common */,
 				E5A2E6C12879925400C9D5EB /* Home */,
 				A508BB5E287A560900A37162 /* Present */,
 				A508BB69287A768D00A37162 /* Settings */,
-				E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */,
-				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
+				A51081DE2871BF5A00A8D648 /* AppDelegate.swift */,
+				A51081E02871BF5A00A8D648 /* SceneDelegate.swift */,
 				A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */,
 				A51081EC2871BF5C00A8D648 /* Info.plist */,
 			);

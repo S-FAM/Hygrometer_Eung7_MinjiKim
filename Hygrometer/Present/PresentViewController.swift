@@ -8,7 +8,7 @@
 import UIKit
 
 class PresentViewController: UIViewController {
-  
+
   private lazy var topFadeView: UIView = {
     let view = UIView()
 
