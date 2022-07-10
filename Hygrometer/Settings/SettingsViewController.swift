@@ -19,6 +19,7 @@ class SettingsViewController: UIViewController {
     let button = UIButton()
     button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
     button.tintColor = .black
+    button.addTarget(self, action: #selector(popSelf), for: .touchUpInside)
 
     return button
   }()
@@ -44,6 +45,7 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
+    setGesture()
   }
 
   private func setupUI() {
@@ -77,6 +79,15 @@ class SettingsViewController: UIViewController {
     titleLabel.snp.makeConstraints { make in
       make.center.equalToSuperview()
     }
+  }
+
+  private func setGesture() {
+    let swipeGesture = UISwipeGestureRecognizer(target: self, action: #selector(popSelf))
+    view.addGestureRecognizer(swipeGesture)
+  }
+
+  @objc func popSelf() {
+    navigationController?.popViewController(animated: true)
   }
 }
 

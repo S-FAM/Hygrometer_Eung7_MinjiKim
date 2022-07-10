@@ -39,6 +39,7 @@ class HomeViewController: UIViewController {
         button.tintColor = .white
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
         button.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+      button.addTarget(self, action: #selector(showSettingskVC), for: .touchUpInside)
 
         return button
     }()
@@ -121,6 +122,7 @@ class HomeViewController: UIViewController {
     // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
+        navigationController?.isNavigationBarHidden = true
 
         let bookmarkStack = UIStackView(arrangedSubviews: [ bookmarkTitle, rightArrowButton ])
         bookmarkStack.axis = .horizontal
@@ -203,15 +205,18 @@ class HomeViewController: UIViewController {
 
     @objc func showSearchVC() {
       let searchVC = PresentViewController(sceneType: .searh)
-//      searchVC.modalPresentationStyle = .overFullScreen
       present(searchVC, animated: true)
     }
 
     @objc func showBookmarkVC() {
       let bookmarkVC = PresentViewController(sceneType: .bookmark)
-//      bookmarkVC.modalPresentationStyle = .overCurrentContext
       present(bookmarkVC, animated: true)
     }
+
+  @objc func showSettingskVC() {
+    let settingsVC = SettingsViewController()
+    navigationController?.pushViewController(settingsVC, animated: true)
+  }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
