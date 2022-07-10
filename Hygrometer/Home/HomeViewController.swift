@@ -203,13 +203,13 @@ class HomeViewController: UIViewController {
 
     @objc func showSearchVC() {
       let searchVC = PresentViewController(sceneType: .searh)
-      searchVC.modalPresentationStyle = .currentContext
+//      searchVC.modalPresentationStyle = .overFullScreen
       present(searchVC, animated: true)
     }
 
     @objc func showBookmarkVC() {
       let bookmarkVC = PresentViewController(sceneType: .bookmark)
-      bookmarkVC.modalPresentationStyle = .currentContext
+//      bookmarkVC.modalPresentationStyle = .overCurrentContext
       present(bookmarkVC, animated: true)
     }
 }

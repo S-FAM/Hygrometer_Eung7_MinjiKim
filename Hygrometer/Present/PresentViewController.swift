@@ -8,6 +8,22 @@
 import UIKit
 
 class PresentViewController: UIViewController {
+  
+  private lazy var topFadeView: UIView = {
+    let view = UIView()
+
+    return view
+  }()
+
+  private lazy var containerView: UIView = {
+    let view = UIView()
+    view.backgroundColor = .white
+    view.layer.cornerRadius = 40
+    view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    view.layer.masksToBounds = true
+
+    return view
+  }()
 
   private lazy var closeButton: UIButton = {
     let button = UIButton()
@@ -61,13 +77,28 @@ class PresentViewController: UIViewController {
     super.viewDidLoad()
     setupUI()
     applySceneType()
+    setGesture()
   }
 
   private func setupUI() {
-    view.backgroundColor = .white
+    view.backgroundColor = .clear
+
+    [topFadeView, containerView].forEach {
+      view.addSubview($0)
+    }
+
+    topFadeView.snp.makeConstraints { make in
+      make.height.equalTo(50)
+      make.top.leading.trailing.equalToSuperview()
+    }
+
+    containerView.snp.makeConstraints { make in
+      make.top.equalTo(topFadeView.snp.bottom)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
 
     [closeButton, searchBar, titleLabel, tableView].forEach {
-      view.addSubview($0)
+      containerView.addSubview($0)
     }
 
     let inset: CGFloat = 8
@@ -99,6 +130,11 @@ class PresentViewController: UIViewController {
       searchBar.isHidden = true
       titleLabel.isHidden = false
     }
+  }
+
+  private func setGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
+    topFadeView.addGestureRecognizer(tapGesture)
   }
 
   @objc func dismissSelf() {
