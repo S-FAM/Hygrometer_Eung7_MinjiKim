@@ -28,6 +28,7 @@ class HomeViewController: UIViewController {
         button.tintColor = .white
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
         button.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+        button.addTarget(self, action: #selector(showSearchVC), for: .touchUpInside)
 
         return button
     }()
@@ -38,6 +39,7 @@ class HomeViewController: UIViewController {
         button.tintColor = .white
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
         button.setContentHuggingPriority(.init(rawValue: 251), for: .horizontal)
+      button.addTarget(self, action: #selector(showSettingskVC), for: .touchUpInside)
 
         return button
     }()
@@ -63,7 +65,7 @@ class HomeViewController: UIViewController {
 
     lazy var bearImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "곰습이 이미지")
+        imageView.image = UIImage(named: "bear")
 
         return imageView
     }()
@@ -94,6 +96,7 @@ class HomeViewController: UIViewController {
         let button = UIButton(type: .custom)
         button.setImage(UIImage(systemName: "chevron.forward"), for: .normal)
         button.tintColor = .black
+        button.addTarget(self, action: #selector(showBookmarkVC), for: .touchUpInside)
 
         return button
     }()
@@ -119,6 +122,7 @@ class HomeViewController: UIViewController {
     // MARK: - Helpers
     private func configureUI() {
         view.backgroundColor = .white
+        navigationController?.isNavigationBarHidden = true
 
         let bookmarkStack = UIStackView(arrangedSubviews: [ bookmarkTitle, rightArrowButton ])
         bookmarkStack.axis = .horizontal
@@ -198,6 +202,21 @@ class HomeViewController: UIViewController {
 
         return UICollectionViewCompositionalLayout(section: section, configuration: config)
     }
+
+    @objc func showSearchVC() {
+      let searchVC = PresentViewController(sceneType: .searh)
+      present(searchVC, animated: true)
+    }
+
+    @objc func showBookmarkVC() {
+      let bookmarkVC = PresentViewController(sceneType: .bookmark)
+      present(bookmarkVC, animated: true)
+    }
+
+  @objc func showSettingskVC() {
+    let settingsVC = SettingsViewController()
+    navigationController?.pushViewController(settingsVC, animated: true)
+  }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
