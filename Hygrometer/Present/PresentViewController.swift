@@ -78,6 +78,10 @@ class PresentViewController: UIViewController {
     setupUI()
     applySceneType()
     setGesture()
+
+    AddressSearchManager().request(from: "수원시") { items in
+      print(items)
+    }
   }
 
   private func setupUI() {
