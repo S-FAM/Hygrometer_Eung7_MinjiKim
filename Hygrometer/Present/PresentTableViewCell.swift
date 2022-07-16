@@ -22,9 +22,8 @@ class PresentTableViewCell: UITableViewCell {
     return view
   }()
 
-  private lazy var text: UILabel = {
+  private lazy var titleLabel: UILabel = {
     let label = UILabel()
-    label.text = "경기도 수원시 장안구 파장동"
     label.font = .systemFont(ofSize: 15, weight: .regular)
 
     return label
@@ -38,10 +37,12 @@ class PresentTableViewCell: UITableViewCell {
     return button
   }()
 
-  func setupUI() {
+  func setupUI(item: Items) {
     selectionStyle = .none
 
-    [roundRectangleView, text, bookmarkBtn].forEach {
+    titleLabel.text = item.title
+
+    [roundRectangleView, titleLabel, bookmarkBtn].forEach {
       addSubview($0)
     }
 
@@ -51,7 +52,7 @@ class PresentTableViewCell: UITableViewCell {
       make.leading.trailing.equalToSuperview().inset(16)
     }
 
-    text.snp.makeConstraints { make in
+    titleLabel.snp.makeConstraints { make in
       make.leading.equalTo(roundRectangleView.snp.leading).inset(20)
       make.centerY.equalToSuperview()
     }

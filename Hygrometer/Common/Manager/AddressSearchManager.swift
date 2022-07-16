@@ -11,6 +11,7 @@ import Foundation
 struct AddressSearchManager {
   func request(
     from keyword: String,
+    startPage: Int,
     completionHandler: @escaping ([Items]) -> Void
   ) {
     guard let url = URL(string: "http://api.vworld.kr/req/search?") else { return }
@@ -20,7 +21,8 @@ struct AddressSearchManager {
       query: keyword,
       request: "search",
       type: "district",
-      category: "L4"
+      category: "L4",
+      page: startPage
     )
 
     AF

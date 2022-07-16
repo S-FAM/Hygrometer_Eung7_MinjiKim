@@ -10,13 +10,7 @@ struct AddressResponseModel: Codable {
 }
 
 struct Response: Codable {
-  let page: Page
   let result: Result
-}
-
-/// total: 전체 페이지 수, current: 현재 페이지 번호, size: 페이지 당 반환되는 결과 건수
-struct Page: Codable {
-  let total, current, size: String
 }
 
 /// items: 응답결과 목록 Root
