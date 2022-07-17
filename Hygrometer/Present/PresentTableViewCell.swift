@@ -29,20 +29,33 @@ class PresentTableViewCell: UITableViewCell {
     return label
   }()
 
-  private lazy var bookmarkBtn: UIButton = {
+  private lazy var bookmarkButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(systemName: "star"), for: .normal)
     button.tintColor = .systemYellow
+    button.addTarget(self, action: #selector(didTappedBookmarkButton), for: .touchUpInside)
 
     return button
   }()
 
-  func setupUI(item: Items) {
+  private var item: Items = Items.EMPTY
+  private let userDefaultsManager = UserDefaultsManager()
+
+  func setupItem(item: Items) {
+    self.item = item
+  }
+
+  func setupUI() {
     selectionStyle = .none
 
     titleLabel.text = item.title
 
-    [roundRectangleView, titleLabel, bookmarkBtn].forEach {
+    if userDefaultsManager.getBookmark().contains(item.id) {
+      bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+    } else {
+      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
+    }
+
+    [roundRectangleView, titleLabel, bookmarkButton].forEach {
       addSubview($0)
     }
 
@@ -57,10 +70,22 @@ class PresentTableViewCell: UITableViewCell {
       make.centerY.equalToSuperview()
     }
 
-    bookmarkBtn.snp.makeConstraints { make in
+    bookmarkButton.snp.makeConstraints { make in
       make.trailing.equalTo(roundRectangleView.snp.trailing).inset(8)
       make.centerY.equalToSuperview()
       make.width.height.equalTo(50)
+    }
+  }
+
+  @objc func didTappedBookmarkButton() {
+    let starImage = bookmarkButton.imageView?.image
+
+    if starImage == UIImage(systemName: "star") {
+      userDefaultsManager.setBookmark(id: item.id)
+      bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+    } else {
+      userDefaultsManager.deleteBookmark(id: item.id)
+      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
     }
   }
 }

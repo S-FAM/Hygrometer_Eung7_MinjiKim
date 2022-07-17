@@ -28,3 +28,7 @@ struct Items: Codable {
 struct Point: Codable {
   let x, y: String
 }
+
+extension Items {
+  static let EMPTY = Items(id: "", title: "", point: Point(x: "", y: ""))
+}
