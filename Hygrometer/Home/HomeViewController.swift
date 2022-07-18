@@ -7,10 +7,13 @@
 
 import UIKit
 import SnapKit
+import CoreLocation
 
 class HomeViewController: UIViewController {
     // MARK: - Properties
     let viewModel = HomeListViewModel()
+    var locationManager = CLLocationManager()
+    var humidity: Int = 0
 
     lazy var backgroundView: UIView = {
         let view = UIView()
@@ -73,13 +76,22 @@ class HomeViewController: UIViewController {
     lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = .systemFont(ofSize: 18.0, weight: .regular)
+        label.font = .systemFont(ofSize: 15.0, weight: .regular)
 
         let now = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy.MM.dd.E"
         let str = formatter.string(from: now)
         label.text = str
+
+        return label
+    }()
+
+    lazy var lastUpdateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "최근 업데이트 : 22:16"
+        label.font = .systemFont(ofSize: 15.0, weight: .regular)
+        label.textColor = .white
 
         return label
     }()
@@ -101,6 +113,16 @@ class HomeViewController: UIViewController {
         return button
     }()
 
+    lazy var updateButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "arrow.triangle.2.circlepath"), for: .normal)
+        button.tintColor = .white
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
+        button.addTarget(self, action: #selector(didTapUpdateButton), for: .touchUpInside)
+
+        return button
+    }()
+
     lazy var collectionView: UICollectionView = {
         let layout = createLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -117,6 +139,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        loadLocation()
     }
 
     // MARK: - Helpers
@@ -128,7 +151,7 @@ class HomeViewController: UIViewController {
         bookmarkStack.axis = .horizontal
         bookmarkStack.distribution = .equalCentering
 
-        [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView ]
+        [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel, updateButton ]
             .forEach { view.addSubview($0) }
 
         backgroundView.snp.makeConstraints { make in
@@ -166,6 +189,11 @@ class HomeViewController: UIViewController {
 
         dateLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
+            make.bottom.equalTo(lastUpdateLabel.snp.top).offset(-4)
+        }
+
+        lastUpdateLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
             make.bottom.equalTo(backgroundView.snp.bottom).offset(-8)
         }
 
@@ -177,6 +205,11 @@ class HomeViewController: UIViewController {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
             make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+
+        updateButton.snp.makeConstraints { make in
+            make.centerX.equalTo(gearButton)
+            make.top.equalTo(gearButton.snp.bottom).offset(24)
         }
     }
 
@@ -203,31 +236,99 @@ class HomeViewController: UIViewController {
         return UICollectionViewCompositionalLayout(section: section, configuration: config)
     }
 
-    @objc func showSearchVC() {
-      let searchVC = PresentViewController(sceneType: .searh)
-      present(searchVC, animated: true)
+    private func loadLocation() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
     }
 
-    @objc func showBookmarkVC() {
-      let bookmarkVC = PresentViewController(sceneType: .bookmark)
-      present(bookmarkVC, animated: true)
+    private func gainCurrentTime() -> String {
+        let formatter = DateFormatter()
+        let currentTime = Date()
+        formatter.dateFormat = "최근 업데이트 : HH:mm"
+        return formatter.string(from: currentTime)
     }
 
-  @objc func showSettingskVC() {
-    let settingsVC = SettingsViewController()
-    navigationController?.pushViewController(settingsVC, animated: true)
-  }
+    private func changeBackgroundColor() {
+        if humidity >= 80 {
+            backgroundView.backgroundColor = .veryMosit
+        } else if humidity >= 60 {
+            backgroundView.backgroundColor = .moist
+        } else if humidity >= 40 {
+            backgroundView.backgroundColor = .comfortable
+        } else if humidity >= 30 {
+            backgroundView.backgroundColor = .dry
+        } else {
+            backgroundView.backgroundColor = .veryDry
+        }
+    }
+
+    // MARK: - Selectors
+    @objc private func showSearchVC() {
+        let searchVC = PresentViewController(sceneType: .searh)
+        present(searchVC, animated: true)
+    }
+
+    @objc private func showBookmarkVC() {
+        let bookmarkVC = PresentViewController(sceneType: .bookmark)
+        present(bookmarkVC, animated: true)
+    }
+
+    @objc private func showSettingskVC() {
+        let settingsVC = SettingsViewController()
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+
+    @objc private func didTapUpdateButton() {
+        locationManager.startUpdatingLocation()
+    }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as? HomeCollectionViewCell else { return UICollectionViewCell() }
-        cell.configureUI()
-
+        cell.configureUI(humidity: humidity)
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
+    }
+}
+
+extension HomeViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.first {
+            let lat = location.coordinate.latitude
+            let lon = location.coordinate.longitude
+            let request = WeatherRequestModel(lat: lat, lon: lon)
+            WeatherService().load(requestModel: request) { [weak self] humidity in
+                guard let self = self else { return }
+                self.percentageLabel.text = "\(humidity)%"
+                self.lastUpdateLabel.text = self.gainCurrentTime()
+                self.humidity = humidity
+                self.changeBackgroundColor()
+                self.collectionView.reloadData()
+                print("Humidity is updated!")
+            }
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
+    }
+
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        switch manager.authorizationStatus {
+        case .authorizedAlways, .authorizedWhenInUse:
+            break
+        case .restricted, .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .denied:
+            print("권한 받아야함!") // 권한을 요청받는 메세지가 계속 뜨도록 해야함..
+        default:
+            return
+        }
     }
 }
