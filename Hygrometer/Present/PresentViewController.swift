@@ -51,7 +51,7 @@ class PresentViewController: UIViewController {
 
     return label
   }()
-    
+
   private lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.separatorStyle = .none

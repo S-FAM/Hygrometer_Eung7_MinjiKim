@@ -1,6 +1,10 @@
 disabled_rules:
 - line_length
-- variable_name
+- identifier_name
+- leading_whitespace
+- trailing_whitespace
+- function_body_length
+- function_parameter_count
 
 included:
 

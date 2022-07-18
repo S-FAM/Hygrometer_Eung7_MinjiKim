@@ -8,10 +8,10 @@
 import Foundation
 
 struct WeatherResponseModel: Decodable {
-    let main: Main
+  let main: Main
 }
 
 // MARK: - Main
 struct Main: Decodable {
-    let humidity: Int
+  let humidity: Int
 }

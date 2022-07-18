@@ -17,7 +17,7 @@ struct AddressSearchManager {
     guard let url = URL(string: "http://api.vworld.kr/req/search?") else { return }
 
     let parameters = AddressRequestModel(
-      key: AddressSearchAPI.key,
+      key: searchAPIKEY,
       query: keyword,
       request: "search",
       type: "district",
