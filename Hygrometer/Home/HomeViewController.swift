@@ -13,7 +13,8 @@ class HomeViewController: UIViewController {
   // MARK: - Properties
   let viewModel = HomeListViewModel()
   var locationManager = CLLocationManager()
-  var humidity: Int = 0
+  var currentLocation: Location?
+  var humidity: Int?
 
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -141,6 +142,12 @@ class HomeViewController: UIViewController {
     configureUI()
     loadLocation()
   }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    print("ViewWillAppear")
+    collectionView.reloadData()
+  }
 
   // MARK: - Helpers
   private func configureUI() {
@@ -250,20 +257,6 @@ class HomeViewController: UIViewController {
     return formatter.string(from: currentTime)
   }
 
-  private func changeBackgroundColor() {
-    if humidity >= 80 {
-      backgroundView.backgroundColor = .veryMosit
-    } else if humidity >= 60 {
-      backgroundView.backgroundColor = .moist
-    } else if humidity >= 40 {
-      backgroundView.backgroundColor = .comfortable
-    } else if humidity >= 30 {
-      backgroundView.backgroundColor = .dry
-    } else {
-      backgroundView.backgroundColor = .veryDry
-    }
-  }
-
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
@@ -288,7 +281,28 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as? HomeCollectionViewCell else { return UICollectionViewCell() }
-    cell.configureUI(humidity: humidity)
+    let bookmarks = BookmarkManager.shared.bookmarks
+    cell.configureUI(location: bookmarks[indexPath.row])
+    
+    if let humidity = humidity {
+      if humidity >= 80 {
+        backgroundView.backgroundColor = .veryMosit
+        cell.background.backgroundColor = .veryMosit
+      } else if humidity >= 60 {
+        backgroundView.backgroundColor = .moist
+        cell.background.backgroundColor = .moist
+      } else if humidity >= 40 {
+        backgroundView.backgroundColor = .comfortable
+        cell.background.backgroundColor = .comfortable
+      } else if humidity >= 30 {
+        backgroundView.backgroundColor = .dry
+        cell.background.backgroundColor = .dry
+      } else {
+        backgroundView.backgroundColor = .veryDry
+        cell.background.backgroundColor = .veryDry
+      }
+    }
+
     return cell
   }
 
@@ -322,9 +336,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         self.percentageLabel.text = "\(humidity)%"
         self.lastUpdateLabel.text = self.gainCurrentTime()
         self.humidity = humidity
-        self.changeBackgroundColor()
         self.collectionView.reloadData()
-        print("Humidity is updated!")
       }
     }
   }

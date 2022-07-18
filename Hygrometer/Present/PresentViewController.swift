@@ -70,6 +70,7 @@ class PresentViewController: UIViewController {
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
+  var dismissCompletion: () -> Void = {}
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -170,7 +171,11 @@ class PresentViewController: UIViewController {
 
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return regionList.count
+    if sceneType == .searh {
+      return regionList.count
+    } else {
+      return BookmarkManager.shared.bookmarks.count
+    }
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -178,8 +183,14 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
-    cell.setupLocation(location: regionList[indexPath.row])
-    cell.setupUI()
+    if sceneType == .searh {
+      cell.setupLocation(location: regionList[indexPath.row])
+      cell.setupUI()
+    } else {
+      let bookmarks = BookmarkManager.shared.bookmarks
+      cell.setupLocation(location: bookmarks[indexPath.row])
+      cell.setupUI()
+    }
 
     return cell
   }
