@@ -12,7 +12,6 @@ struct Location: Codable {
   let lat: String
   let lon: String
   let location: String
-  let bookmark: Bool
 }
 
 class BookmarkManager {

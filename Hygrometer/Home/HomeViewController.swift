@@ -293,18 +293,32 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return BookmarkManager.shared.bookmarks.count
   }
 }
 
 extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.first {
+      let geocoder = CLGeocoder()
+      let locale = Locale(identifier: "Ko-KR")
       let lat = location.coordinate.latitude
       let lon = location.coordinate.longitude
       let request = WeatherRequestModel(lat: lat, lon: lon)
       WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
         guard let self = self else { return }
+        let cllLocation = CLLocation(latitude: lat, longitude: lon)
+        geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
+          guard let placemarks = placemarks,
+                let address = placemarks.first else { return }
+          DispatchQueue.main.async {
+            guard let administrativeArea = address.administrativeArea,
+                  let locality = address.locality,
+                  let subLocality = address.subLocality else { return }
+            let text = "\(administrativeArea) \(locality) \(subLocality)"
+            self.currentLocationLabel.text = text
+          }
+        }
         self.percentageLabel.text = "\(humidity)%"
         self.lastUpdateLabel.text = self.gainCurrentTime()
         self.humidity = humidity
