@@ -178,7 +178,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
-    cell.setupItem(item: regionList[indexPath.row])
+    cell.setupLocation(location: regionList[indexPath.row])
     cell.setupUI()
 
     return cell
