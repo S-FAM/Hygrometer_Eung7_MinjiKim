@@ -65,7 +65,7 @@ class PresentViewController: UIViewController {
 
   private var sceneType: SceneType
 
-  private var regionList: [Items] = []
+  private var regionList: [Location] = []
 
   private var keyword = ""
   private var currentPage: Int = 1
@@ -155,10 +155,9 @@ class PresentViewController: UIViewController {
     AddressSearchManager().request(
       from: keyword,
       startPage: currentPage
-    ) { [weak self] items in
+    ) { [weak self] locations in
       guard let self = self else { return }
-
-      self.regionList += items
+      self.regionList += locations
       self.currentPage += 1
       self.tableView.reloadData()
     }
