@@ -22,26 +22,40 @@ class PresentTableViewCell: UITableViewCell {
     return view
   }()
 
-  private lazy var text: UILabel = {
+  private lazy var titleLabel: UILabel = {
     let label = UILabel()
-    label.text = "경기도 수원시 장안구 파장동"
     label.font = .systemFont(ofSize: 15, weight: .regular)
 
     return label
   }()
 
-  private lazy var bookmarkBtn: UIButton = {
+  private lazy var bookmarkButton: UIButton = {
     let button = UIButton()
-    button.setImage(UIImage(systemName: "star"), for: .normal)
     button.tintColor = .systemYellow
+    button.addTarget(self, action: #selector(didTappedBookmarkButton), for: .touchUpInside)
 
     return button
   }()
 
+  private var item: Items = Items.EMPTY
+  private let userDefaultsManager = UserDefaultsManager()
+
+  func setupItem(item: Items) {
+    self.item = item
+  }
+
   func setupUI() {
     selectionStyle = .none
 
-    [roundRectangleView, text, bookmarkBtn].forEach {
+    titleLabel.text = item.title
+
+    if userDefaultsManager.getBookmark().contains(item.id) {
+      bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+    } else {
+      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
+    }
+
+    [roundRectangleView, titleLabel, bookmarkButton].forEach {
       addSubview($0)
     }
 
@@ -51,15 +65,27 @@ class PresentTableViewCell: UITableViewCell {
       make.leading.trailing.equalToSuperview().inset(16)
     }
 
-    text.snp.makeConstraints { make in
+    titleLabel.snp.makeConstraints { make in
       make.leading.equalTo(roundRectangleView.snp.leading).inset(20)
       make.centerY.equalToSuperview()
     }
 
-    bookmarkBtn.snp.makeConstraints { make in
+    bookmarkButton.snp.makeConstraints { make in
       make.trailing.equalTo(roundRectangleView.snp.trailing).inset(8)
       make.centerY.equalToSuperview()
       make.width.height.equalTo(50)
+    }
+  }
+
+  @objc func didTappedBookmarkButton() {
+    let starImage = bookmarkButton.imageView?.image
+
+    if starImage == UIImage(systemName: "star") {
+      userDefaultsManager.setBookmark(id: item.id)
+      bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
+    } else {
+      userDefaultsManager.deleteBookmark(id: item.id)
+      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
     }
   }
 }

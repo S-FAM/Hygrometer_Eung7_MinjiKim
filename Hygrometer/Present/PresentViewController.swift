@@ -38,6 +38,7 @@ class PresentViewController: UIViewController {
     let searchBar = UISearchBar()
     searchBar.searchBarStyle = .minimal
     searchBar.placeholder = "지역 검색"
+    searchBar.delegate = self
 
     return searchBar
   }()
@@ -63,6 +64,12 @@ class PresentViewController: UIViewController {
   }()
 
   private var sceneType: SceneType
+
+  private var regionList: [Items] = []
+
+  private var keyword = ""
+  private var currentPage: Int = 1
+  private let display: Int = 10
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -119,6 +126,8 @@ class PresentViewController: UIViewController {
       make.top.equalTo(searchBar.snp.bottom).offset(inset)
       make.leading.trailing.bottom.equalToSuperview()
     }
+
+    searchBar.becomeFirstResponder()
   }
 
   private func applySceneType() {
@@ -137,6 +146,24 @@ class PresentViewController: UIViewController {
     topFadeView.addGestureRecognizer(tapGesture)
   }
 
+  private func requestRegionList(isReset: Bool) {
+    if isReset {
+      regionList = []
+      currentPage = 1
+    }
+
+    AddressSearchManager().request(
+      from: keyword,
+      startPage: currentPage
+    ) { [weak self] items in
+      guard let self = self else { return }
+
+      self.regionList += items
+      self.currentPage += 1
+      self.tableView.reloadData()
+    }
+  }
+
   @objc func dismissSelf() {
     dismiss(animated: true)
   }
@@ -144,7 +171,7 @@ class PresentViewController: UIViewController {
 
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    return regionList.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -152,8 +179,25 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
+    cell.setupItem(item: regionList[indexPath.row])
     cell.setupUI()
 
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    let currentRow = indexPath.row
+    guard (currentRow % display) == (display - 2) && (currentRow / display) == (currentPage - 2) else { return }
+
+    requestRegionList(isReset: false)
+  }
+}
+
+extension PresentViewController: UISearchBarDelegate {
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    guard let searchText = searchBar.text else { return }
+
+    self.keyword = searchText
+    requestRegionList(isReset: true)
   }
 }
