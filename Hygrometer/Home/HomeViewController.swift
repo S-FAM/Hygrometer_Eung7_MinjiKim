@@ -113,16 +113,6 @@ class HomeViewController: UIViewController {
     return button
   }()
 
-  lazy var updateButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(systemName: "arrow.triangle.2.circlepath"), for: .normal)
-    button.tintColor = .white
-    button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
-    button.addTarget(self, action: #selector(didTapUpdateButton), for: .touchUpInside)
-
-    return button
-  }()
-
   lazy var collectionView: UICollectionView = {
     let layout = createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -151,7 +141,7 @@ class HomeViewController: UIViewController {
     bookmarkStack.axis = .horizontal
     bookmarkStack.distribution = .equalCentering
 
-    [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel, updateButton ]
+    [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel ]
       .forEach { view.addSubview($0) }
 
     backgroundView.snp.makeConstraints { make in
@@ -205,11 +195,6 @@ class HomeViewController: UIViewController {
     collectionView.snp.makeConstraints { make in
       make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
-    }
-
-    updateButton.snp.makeConstraints { make in
-      make.centerX.equalTo(gearButton)
-      make.top.equalTo(gearButton.snp.bottom).offset(24)
     }
   }
 
