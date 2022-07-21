@@ -13,7 +13,8 @@ class HomeViewController: UIViewController {
   // MARK: - Properties
   let viewModel = HomeListViewModel()
   var locationManager = CLLocationManager()
-  var humidity: Int = 0
+  var currentLocation: Location?
+  var humidity: Int?
 
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -113,16 +114,6 @@ class HomeViewController: UIViewController {
     return button
   }()
 
-  lazy var updateButton: UIButton = {
-    let button = UIButton(type: .custom)
-    button.setImage(UIImage(systemName: "arrow.triangle.2.circlepath"), for: .normal)
-    button.tintColor = .white
-    button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration.init(pointSize: 24.0), forImageIn: .normal)
-    button.addTarget(self, action: #selector(didTapUpdateButton), for: .touchUpInside)
-
-    return button
-  }()
-
   lazy var collectionView: UICollectionView = {
     let layout = createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -140,6 +131,12 @@ class HomeViewController: UIViewController {
     super.viewDidLoad()
     configureUI()
     loadLocation()
+    BookmarkManager.shared.delegate = self
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    collectionView.reloadData()
   }
 
   // MARK: - Helpers
@@ -151,7 +148,7 @@ class HomeViewController: UIViewController {
     bookmarkStack.axis = .horizontal
     bookmarkStack.distribution = .equalCentering
 
-    [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel, updateButton ]
+    [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel ]
       .forEach { view.addSubview($0) }
 
     backgroundView.snp.makeConstraints { make in
@@ -206,11 +203,6 @@ class HomeViewController: UIViewController {
       make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
       make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
     }
-
-    updateButton.snp.makeConstraints { make in
-      make.centerX.equalTo(gearButton)
-      make.top.equalTo(gearButton.snp.bottom).offset(24)
-    }
   }
 
   private func createSection() -> NSCollectionLayoutSection {
@@ -250,20 +242,6 @@ class HomeViewController: UIViewController {
     return formatter.string(from: currentTime)
   }
 
-  private func changeBackgroundColor() {
-    if humidity >= 80 {
-      backgroundView.backgroundColor = .veryMosit
-    } else if humidity >= 60 {
-      backgroundView.backgroundColor = .moist
-    } else if humidity >= 40 {
-      backgroundView.backgroundColor = .comfortable
-    } else if humidity >= 30 {
-      backgroundView.backgroundColor = .dry
-    } else {
-      backgroundView.backgroundColor = .veryDry
-    }
-  }
-
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
@@ -288,29 +266,62 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as? HomeCollectionViewCell else { return UICollectionViewCell() }
-    cell.configureUI(humidity: humidity)
+    let bookmarks = BookmarkManager.shared.bookmarks
+    cell.configureUI(location: bookmarks[indexPath.row])
+    
+    if let humidity = humidity {
+      if humidity >= 80 {
+        backgroundView.backgroundColor = .veryMosit
+        cell.background.backgroundColor = .veryMosit
+      } else if humidity >= 60 {
+        backgroundView.backgroundColor = .moist
+        cell.background.backgroundColor = .moist
+      } else if humidity >= 40 {
+        backgroundView.backgroundColor = .comfortable
+        cell.background.backgroundColor = .comfortable
+      } else if humidity >= 30 {
+        backgroundView.backgroundColor = .dry
+        cell.background.backgroundColor = .dry
+      } else {
+        backgroundView.backgroundColor = .veryDry
+        cell.background.backgroundColor = .veryDry
+      }
+    }
+
     return cell
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 10
+    return BookmarkManager.shared.bookmarks.count
   }
 }
 
 extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     if let location = locations.first {
+      let geocoder = CLGeocoder()
+      let locale = Locale(identifier: "Ko-KR")
       let lat = location.coordinate.latitude
       let lon = location.coordinate.longitude
       let request = WeatherRequestModel(lat: lat, lon: lon)
       WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
         guard let self = self else { return }
+        let cllLocation = CLLocation(latitude: lat, longitude: lon)
+        geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
+          guard let placemarks = placemarks else { return }
+          guard let address = placemarks.first else { return }
+          DispatchQueue.main.async {
+            let administrativeArea = address.administrativeArea ?? ""
+            let locality = address.locality ?? ""
+            let subLocality = address.subLocality ?? ""
+            let text = administrativeArea + " " + locality + " " + subLocality
+            self.currentLocationLabel.text = text
+          }
+        }
         self.percentageLabel.text = "\(humidity)%"
         self.lastUpdateLabel.text = self.gainCurrentTime()
         self.humidity = humidity
-        self.changeBackgroundColor()
         self.collectionView.reloadData()
-        print("Humidity is updated!")
       }
     }
   }
@@ -324,11 +335,18 @@ extension HomeViewController: CLLocationManagerDelegate {
     case .authorizedAlways, .authorizedWhenInUse:
       break
     case .restricted, .notDetermined:
+      print("Restricted!")
       locationManager.requestWhenInUseAuthorization()
     case .denied:
       print("권한 받아야함!") // 권한을 요청받는 메세지가 계속 뜨도록 해야함..
     default:
       return
     }
+  }
+}
+
+extension HomeViewController: BookmarkManagerDelegate {
+  func updateCollectionView() {
+    collectionView.reloadData()
   }
 }

@@ -65,11 +65,12 @@ class PresentViewController: UIViewController {
 
   private var sceneType: SceneType
 
-  private var regionList: [Items] = []
+  private var regionList: [Location] = []
 
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
+  var dismissCompletion: () -> Void = {}
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -155,10 +156,9 @@ class PresentViewController: UIViewController {
     AddressSearchManager().request(
       from: keyword,
       startPage: currentPage
-    ) { [weak self] items in
+    ) { [weak self] locations in
       guard let self = self else { return }
-
-      self.regionList += items
+      self.regionList += locations
       self.currentPage += 1
       self.tableView.reloadData()
     }
@@ -171,7 +171,11 @@ class PresentViewController: UIViewController {
 
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return regionList.count
+    if sceneType == .searh {
+      return regionList.count
+    } else {
+      return BookmarkManager.shared.bookmarks.count
+    }                                         
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -179,8 +183,14 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
-    cell.setupItem(item: regionList[indexPath.row])
-    cell.setupUI()
+    if sceneType == .searh {
+      cell.setupLocation(location: regionList[indexPath.row])
+      cell.setupUI()
+    } else {
+      let bookmarks = BookmarkManager.shared.bookmarks
+      cell.setupLocation(location: bookmarks[indexPath.row])
+      cell.setupUI()
+    }
 
     return cell
   }
@@ -201,3 +211,4 @@ extension PresentViewController: UISearchBarDelegate {
     requestRegionList(isReset: true)
   }
 }
+

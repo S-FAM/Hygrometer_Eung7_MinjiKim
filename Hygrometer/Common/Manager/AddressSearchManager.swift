@@ -12,7 +12,7 @@ struct AddressSearchManager {
   func request(
     from keyword: String,
     startPage: Int,
-    completionHandler: @escaping ([Items]) -> Void
+    completionHandler: @escaping ([Location]) -> Void
   ) {
     guard let url = URL(string: "http://api.vworld.kr/req/search?") else { return }
 
@@ -30,7 +30,8 @@ struct AddressSearchManager {
       .responseDecodable(of: AddressResponseModel.self) { response in
         switch response.result {
         case .success(let result):
-          completionHandler(result.response.result.items)
+          let locations = result.response.result.items.map { return Location(id: $0.id, lat: $0.point.x, lon: $0.point.y, location: $0.title) }
+          completionHandler(locations)
         case .failure(let error):
           print(error)
         }

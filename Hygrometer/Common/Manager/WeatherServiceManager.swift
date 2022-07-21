@@ -22,7 +22,9 @@ class WeatherServiceManager {
       .responseDecodable(of: WeatherResponseModel.self) { response in
         switch response.result {
         case .success(let responseModel):
-          completion(responseModel.main.humidity)
+          DispatchQueue.main.async {
+            completion(responseModel.main.humidity)
+          }
           return
         case .failure(let error):
           print(error.localizedDescription)
