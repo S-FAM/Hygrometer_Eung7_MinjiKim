@@ -9,4 +9,7 @@ import Foundation
 import CoreLocation
 
 class HomeListViewModel {
+  var bookmarks: [Location] {
+    BookmarkManager.shared.bookmarks
+  }
 }

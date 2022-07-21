@@ -37,24 +37,26 @@ class PresentTableViewCell: UITableViewCell {
     return button
   }()
 
-  private var item: Items = Items.EMPTY
+  private var location: Location?
   private let userDefaultsManager = UserDefaultsManager()
 
-  func setupItem(item: Items) {
-    self.item = item
+  func setupLocation(location: Location) {
+    self.location = location
   }
 
   func setupUI() {
+    guard let location = location else { return }
+
     selectionStyle = .none
 
-    titleLabel.text = item.title
-
-    if userDefaultsManager.getBookmark().contains(item.id) {
+    titleLabel.text = location.location
+    
+    if BookmarkManager.shared.bookmarks.contains(where: { $0.id == location.id }) {
       bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
     } else {
       bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
     }
-
+    
     [roundRectangleView, titleLabel, bookmarkButton].forEach {
       addSubview($0)
     }
@@ -79,12 +81,14 @@ class PresentTableViewCell: UITableViewCell {
 
   @objc func didTappedBookmarkButton() {
     let starImage = bookmarkButton.imageView?.image
+    
+    guard let location = location else { return }
 
     if starImage == UIImage(systemName: "star") {
-      userDefaultsManager.setBookmark(id: item.id)
+      BookmarkManager.shared.insertBookmark(location: location)
       bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
     } else {
-      userDefaultsManager.deleteBookmark(id: item.id)
+      BookmarkManager.shared.removeBookmark(location: location)
       bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
     }
   }

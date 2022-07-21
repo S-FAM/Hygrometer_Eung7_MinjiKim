@@ -30,20 +30,10 @@ class HomeCollectionViewCell: UICollectionViewCell {
   }()
 
   // MARK: - Helpers
-  func configureUI(humidity: Int) {
+  func configureUI(location: Location) {
     contentView.backgroundColor = .white
-
-    if humidity >= 80 {
-      background.backgroundColor = .veryMosit
-    } else if humidity >= 60 {
-      background.backgroundColor = .moist
-    } else if humidity >= 40 {
-      background.backgroundColor = .comfortable
-    } else if humidity >= 30 {
-      background.backgroundColor = .dry
-    } else {
-      background.backgroundColor = .veryDry
-    }
+    
+    locationLabel.text = location.location
 
     contentView.addSubview(background)
     background.addSubview(locationLabel)

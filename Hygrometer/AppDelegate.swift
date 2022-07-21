@@ -10,6 +10,7 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    BookmarkManager.shared.bookmarks = UserDefaultsManager.getBookmark()
     return true
   }
 
