@@ -129,6 +129,7 @@ class HomeViewController: UIViewController {
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    showEntryVC()
     configureUI()
     loadLocation()
     BookmarkManager.shared.delegate = self
@@ -140,6 +141,12 @@ class HomeViewController: UIViewController {
   }
 
   // MARK: - Helpers
+  private func showEntryVC() {
+    let entryVC = EntryViewController()
+    entryVC.modalPresentationStyle = .fullScreen
+    present(entryVC, animated: false)
+  }
+
   private func configureUI() {
     view.backgroundColor = .white
     navigationController?.isNavigationBarHidden = true
