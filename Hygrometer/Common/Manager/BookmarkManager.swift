@@ -7,6 +7,10 @@
 
 import Foundation
 
+protocol BookmarkManagerDelegate: AnyObject {
+  func updateCollectionView()
+}
+
 struct Location: Codable {
   let id: String
   let lat: String
@@ -17,9 +21,13 @@ struct Location: Codable {
 class BookmarkManager {
   private init() {}
   static let shared = BookmarkManager()
+  weak var delegate: BookmarkManagerDelegate?
   
   var bookmarks: [Location] = [] {
-    didSet { UserDefaultsManager.setBookmark(bookmarks: bookmarks) }
+    didSet {
+      UserDefaultsManager.setBookmark(bookmarks: bookmarks)
+      delegate?.updateCollectionView()
+    }
   }
 }
 

@@ -175,7 +175,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       return regionList.count
     } else {
       return BookmarkManager.shared.bookmarks.count
-    }
+    }                                         
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -211,3 +211,4 @@ extension PresentViewController: UISearchBarDelegate {
     requestRegionList(isReset: true)
   }
 }
+
