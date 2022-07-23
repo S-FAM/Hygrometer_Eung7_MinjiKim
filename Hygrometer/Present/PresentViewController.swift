@@ -55,6 +55,7 @@ class PresentViewController: UIViewController {
   private lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.separatorStyle = .none
+    tableView.backgroundColor = .clear
     tableView.showsVerticalScrollIndicator = false
     tableView.keyboardDismissMode = .onDrag
     tableView.dataSource = self
@@ -62,6 +63,15 @@ class PresentViewController: UIViewController {
     tableView.register(PresentTableViewCell.self, forCellReuseIdentifier: PresentTableViewCell.identifier)
 
     return tableView
+  }()
+
+  private lazy var emptyLabel: UILabel = {
+    let label = UILabel()
+    label.textAlignment = .center
+    label.textColor = .gray
+    label.font = .systemFont(ofSize: 16, weight: .regular)
+
+    return label
   }()
 
   private var sceneType: SceneType
@@ -106,7 +116,7 @@ class PresentViewController: UIViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    [closeButton, searchBar, titleLabel, tableView].forEach {
+    [closeButton, searchBar, titleLabel, emptyLabel, tableView].forEach {
       containerView.addSubview($0)
     }
 
@@ -124,21 +134,27 @@ class PresentViewController: UIViewController {
       }
     }
 
-    tableView.snp.makeConstraints { make in
-      make.top.equalTo(searchBar.snp.bottom).offset(inset)
-      make.leading.trailing.bottom.equalToSuperview()
+    [emptyLabel, tableView].forEach {
+      $0.snp.makeConstraints { make in
+        make.top.equalTo(searchBar.snp.bottom).offset(inset)
+        make.leading.trailing.bottom.equalToSuperview()
+      }
     }
   }
 
   private func applySceneType() {
     switch sceneType {
     case .searh:
+      searchBar.becomeFirstResponder()
       searchBar.isHidden = false
       titleLabel.isHidden = true
-      searchBar.becomeFirstResponder()
+      emptyLabel.text = "검색 결과가 없습니다."
+
     case .bookmark:
       searchBar.isHidden = true
       titleLabel.isHidden = false
+      emptyLabel.text = "북마크한 지역이 없습니다."
+      isHiddenEmptyLabel(dataCount: BookmarkManager.shared.bookmarks.count)
     }
   }
 
@@ -161,6 +177,15 @@ class PresentViewController: UIViewController {
       self.regionList += locations
       self.currentPage += 1
       self.tableView.reloadData()
+      self.isHiddenEmptyLabel(dataCount: locations.count)
+    }
+  }
+
+  private func isHiddenEmptyLabel(dataCount: Int) {
+    if dataCount == 0 {
+      emptyLabel.isHidden = false
+    } else {
+      emptyLabel.isHidden = true
     }
   }
 
