@@ -56,6 +56,7 @@ class PresentViewController: UIViewController {
     let tableView = UITableView()
     tableView.separatorStyle = .none
     tableView.showsVerticalScrollIndicator = false
+    tableView.keyboardDismissMode = .onDrag
     tableView.dataSource = self
     tableView.delegate = self
     tableView.register(PresentTableViewCell.self, forCellReuseIdentifier: PresentTableViewCell.identifier)
@@ -127,8 +128,6 @@ class PresentViewController: UIViewController {
       make.top.equalTo(searchBar.snp.bottom).offset(inset)
       make.leading.trailing.bottom.equalToSuperview()
     }
-
-    searchBar.becomeFirstResponder()
   }
 
   private func applySceneType() {
@@ -136,6 +135,7 @@ class PresentViewController: UIViewController {
     case .searh:
       searchBar.isHidden = false
       titleLabel.isHidden = true
+      searchBar.becomeFirstResponder()
     case .bookmark:
       searchBar.isHidden = true
       titleLabel.isHidden = false
@@ -205,10 +205,11 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension PresentViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+
     guard let searchText = searchBar.text else { return }
 
     self.keyword = searchText
     requestRegionList(isReset: true)
   }
 }
-
