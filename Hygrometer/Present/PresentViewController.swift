@@ -241,12 +241,15 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if sceneType == .bookmark {
       let location = bookmarkManager.bookmarks[indexPath.row]
-      delegate?.didTapLocation(location: location)
+      dismiss(animated: true) { [weak self] in
+        self?.delegate?.didTapLocation(location: location)
+      }
     } else {
       let location = regionList[indexPath.row]
-      delegate?.didTapLocation(location: location)
+      dismiss(animated: true) { [weak self] in
+        self?.delegate?.didTapLocation(location: location)
+      }
     }
-    dismiss(animated: true)
   }
 }
 

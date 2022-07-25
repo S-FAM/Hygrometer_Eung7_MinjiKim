@@ -276,6 +276,7 @@ class HomeViewController: UIViewController {
     let lat = CLLocationDegrees(location.lon)!
     let lon = CLLocationDegrees(location.lat)!
     let requestModel = WeatherRequestModel(lat: lat, lon: lon)
+    let loadingVC = LoadingViewController()
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
       self.humidity = humidity
@@ -283,7 +284,12 @@ class HomeViewController: UIViewController {
       self.lastUpdateLabel.text = self.viewModel.currentTime
       self.updateBackgroundColor()
       self.collectionView.reloadData()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        loadingVC.dismiss(animated: false)
+      }
     }
+    loadingVC.modalPresentationStyle = .overFullScreen
+    present(loadingVC, animated: false)
   }
   
   private func checkLocationAuthorization() {
