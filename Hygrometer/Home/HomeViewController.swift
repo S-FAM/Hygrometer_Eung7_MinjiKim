@@ -15,6 +15,8 @@ class HomeViewController: UIViewController {
   var locationManager = CLLocationManager()
   var currentLocation: Location?
   var humidity: Int?
+  
+  let entryVC = EntryViewController()
 
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -154,7 +156,6 @@ class HomeViewController: UIViewController {
 
   // MARK: - Helpers
   private func showEntryVC() {
-    let entryVC = EntryViewController()
     entryVC.modalPresentationStyle = .fullScreen
     present(entryVC, animated: false)
   }
@@ -382,6 +383,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         self.humidity = humidity
         self.updateBackgroundColor()
         self.collectionView.reloadData()
+        self.entryVC.dismiss(animated: true) /// EntryVC를 언제 비활성화 하는게 좋은지 논의해봐야함 ...
       }
     }
   }
