@@ -9,6 +9,8 @@ import UIKit
 
 class PresentTableViewCell: UITableViewCell {
   static let identifier = "PresentTableViewCell"
+  let bookmarkManager = BookmarkManager.shared
+  var sceneType: SceneType = .bookmark
 
   private lazy var roundRectangleView: UIView = {
     let view = UIView()
@@ -39,6 +41,7 @@ class PresentTableViewCell: UITableViewCell {
 
   private var location: Location?
   private let userDefaultsManager = UserDefaultsManager()
+  var onChangedBookmarks: () -> Void = {}
 
   func setupLocation(location: Location) {
     self.location = location
@@ -58,7 +61,7 @@ class PresentTableViewCell: UITableViewCell {
     }
     
     [roundRectangleView, titleLabel, bookmarkButton].forEach {
-      addSubview($0)
+      contentView.addSubview($0)
     }
 
     roundRectangleView.snp.makeConstraints { make in
@@ -90,6 +93,11 @@ class PresentTableViewCell: UITableViewCell {
     } else {
       BookmarkManager.shared.removeBookmark(location: location)
       bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
+    }
+    
+    if sceneType == .bookmark {
+      bookmarkManager.removeBookmark(location: location)
+      onChangedBookmarks()
     }
   }
 }

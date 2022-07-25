@@ -298,11 +298,13 @@ class HomeViewController: UIViewController {
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
+    searchVC.delegate = self
     present(searchVC, animated: true)
   }
 
   @objc private func showBookmarkVC() {
     let bookmarkVC = PresentViewController(sceneType: .bookmark)
+    bookmarkVC.delegate = self
     present(bookmarkVC, animated: true)
   }
 
@@ -395,5 +397,11 @@ extension HomeViewController: CLLocationManagerDelegate {
 extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
+  }
+}
+
+extension HomeViewController: PresentViewControllerDelegate {
+  func didTapLocation(location: Location) {
+    updateHumidity(location: location)
   }
 }
