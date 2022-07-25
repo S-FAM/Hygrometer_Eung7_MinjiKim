@@ -9,7 +9,6 @@ import UIKit
 import WaterDrops
 
 class EntryViewController: UIViewController {
-
   private lazy var bearImage: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "bear")

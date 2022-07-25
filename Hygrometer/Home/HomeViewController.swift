@@ -125,6 +125,18 @@ class HomeViewController: UIViewController {
 
     return collectionView
   }()
+  
+  lazy var locationAlert: UIAlertController = {
+    let alter = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+      UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+    }
+    let noAction = UIAlertAction(title: "아니오", style: .destructive)
+    alter.addAction(okAction)
+    alter.addAction(noAction)
+    
+    return alter
+  }()
 
   // MARK: - LifeCycle
   override func viewDidLoad() {
@@ -135,9 +147,9 @@ class HomeViewController: UIViewController {
     BookmarkManager.shared.delegate = self
   }
   
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-    collectionView.reloadData()
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    checkLocationAuthorization()
   }
 
   // MARK: - Helpers
@@ -241,12 +253,46 @@ class HomeViewController: UIViewController {
     locationManager.requestWhenInUseAuthorization()
     locationManager.startUpdatingLocation()
   }
-
-  private func gainCurrentTime() -> String {
-    let formatter = DateFormatter()
-    let currentTime = Date()
-    formatter.dateFormat = "최근 업데이트 : HH:mm"
-    return formatter.string(from: currentTime)
+  
+  func updateBackgroundColor() {
+    if let humidity = humidity {
+      if humidity >= 80 {
+        backgroundView.backgroundColor = .veryMosit
+      } else if humidity >= 60 {
+        backgroundView.backgroundColor = .moist
+      } else if humidity >= 40 {
+        backgroundView.backgroundColor = .comfortable
+      } else if humidity >= 30 {
+        backgroundView.backgroundColor = .dry
+      } else {
+        backgroundView.backgroundColor = .veryDry
+      }
+    }
+  }
+  
+  private func updateHumidity(location: Location) {
+    currentLocationLabel.text = location.location
+    
+    let lat = CLLocationDegrees(location.lon)!
+    let lon = CLLocationDegrees(location.lat)!
+    let requestModel = WeatherRequestModel(lat: lat, lon: lon)
+    WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
+      guard let self = self else { return }
+      self.humidity = humidity
+      self.percentageLabel.text = "\(humidity)%"
+      self.lastUpdateLabel.text = self.viewModel.currentTime
+      self.updateBackgroundColor()
+      self.collectionView.reloadData()
+    }
+  }
+  
+  private func checkLocationAuthorization() {
+    switch locationManager.authorizationStatus {
+    case .denied:
+      present(self.locationAlert, animated: true)
+    default:
+      break
+    }
   }
 
   // MARK: - Selectors
@@ -273,24 +319,18 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCollectionViewCell.id, for: indexPath) as? HomeCollectionViewCell else { return UICollectionViewCell() }
-    let bookmarks = BookmarkManager.shared.bookmarks
-    cell.configureUI(location: bookmarks[indexPath.row])
+    cell.configureUI(location: viewModel.bookmarks[indexPath.row])
     
     if let humidity = humidity {
       if humidity >= 80 {
-        backgroundView.backgroundColor = .veryMosit
         cell.background.backgroundColor = .veryMosit
       } else if humidity >= 60 {
-        backgroundView.backgroundColor = .moist
         cell.background.backgroundColor = .moist
       } else if humidity >= 40 {
-        backgroundView.backgroundColor = .comfortable
         cell.background.backgroundColor = .comfortable
       } else if humidity >= 30 {
-        backgroundView.backgroundColor = .dry
         cell.background.backgroundColor = .dry
       } else {
-        backgroundView.backgroundColor = .veryDry
         cell.background.backgroundColor = .veryDry
       }
     }
@@ -299,7 +339,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
   }
 
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return BookmarkManager.shared.bookmarks.count
+    return viewModel.numberOfItemsInSection
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    updateHumidity(location: viewModel.bookmarks[indexPath.row])
   }
 }
 
@@ -326,8 +370,9 @@ extension HomeViewController: CLLocationManagerDelegate {
           }
         }
         self.percentageLabel.text = "\(humidity)%"
-        self.lastUpdateLabel.text = self.gainCurrentTime()
+        self.lastUpdateLabel.text = self.viewModel.currentTime
         self.humidity = humidity
+        self.updateBackgroundColor()
         self.collectionView.reloadData()
       }
     }
@@ -336,18 +381,13 @@ extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print(error.localizedDescription)
   }
-
+  
   func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
     switch manager.authorizationStatus {
-    case .authorizedAlways, .authorizedWhenInUse:
-      break
-    case .restricted, .notDetermined:
-      print("Restricted!")
-      locationManager.requestWhenInUseAuthorization()
     case .denied:
-      print("권한 받아야함!") // 권한을 요청받는 메세지가 계속 뜨도록 해야함..
+      checkLocationAuthorization()
     default:
-      return
+      break
     }
   }
 }

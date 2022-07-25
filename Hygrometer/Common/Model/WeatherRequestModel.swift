@@ -11,5 +11,4 @@ import CoreLocation
 struct WeatherRequestModel: Codable {
   let lat: Double
   let lon: Double
-
 }
