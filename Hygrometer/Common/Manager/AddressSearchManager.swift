@@ -33,7 +33,8 @@ struct AddressSearchManager {
           let locations = result.response.result.items.map { return Location(id: $0.id, lat: $0.point.x, lon: $0.point.y, location: $0.title) }
           completionHandler(locations)
         case .failure(let error):
-          print(error)
+          print(error.localizedDescription)
+          completionHandler([])
         }
       }
       .resume()
