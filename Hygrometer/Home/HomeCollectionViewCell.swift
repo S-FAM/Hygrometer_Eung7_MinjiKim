@@ -15,7 +15,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
   lazy var background: UIView = {
     let view = UIView()
     view.backgroundColor = .comfortable
-    view.layer.cornerRadius = 23.0
+    view.layer.cornerRadius = contentView.bounds.height / 2
 
     return view
   }()
@@ -23,8 +23,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
   lazy var locationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
-    label.font = .systemFont(ofSize: 18.0, weight: .semibold)
-    label.text = "경기도 수원시 장안구 파장동"
+    label.font = .systemFont(ofSize: Measure.HomeCell.locationFontSize, weight: .semibold)
 
     return label
   }()
@@ -46,5 +45,11 @@ class HomeCollectionViewCell: UICollectionViewCell {
       make.centerY.equalToSuperview()
       make.leading.trailing.equalToSuperview().inset(16)
     }
+  }
+}
+
+extension Measure {
+  fileprivate struct HomeCell {
+    static let locationFontSize: CGFloat = Measure(regular: 18, medium: 17, small: 16, tiny: 14).forScreen
   }
 }

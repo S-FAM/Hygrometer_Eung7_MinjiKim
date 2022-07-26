@@ -20,6 +20,7 @@
 		A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */; };
 		A51081F42871C12200A8D648 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F32871C12200A8D648 /* Alamofire */; };
 		A51081F72871C12E00A8D648 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F62871C12E00A8D648 /* SnapKit */; };
+		A540D8BA28900F1000B53A7E /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A540D8B928900F1000B53A7E /* Measure.swift */; };
 		A57D2D27287D9729005EA7CA /* AddressResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D26287D9729005EA7CA /* AddressResponseModel.swift */; };
 		A57D2D29287D9731005EA7CA /* AddressRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D28287D9731005EA7CA /* AddressRequestModel.swift */; };
 		A57D2D2C287D99B4005EA7CA /* AddressSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */; };
@@ -51,6 +52,7 @@
 		A51081E72871BF5C00A8D648 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51081EA2871BF5C00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51081EC2871BF5C00A8D648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A540D8B928900F1000B53A7E /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		A57D2D26287D9729005EA7CA /* AddressResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressResponseModel.swift; sourceTree = "<group>"; };
 		A57D2D28287D9731005EA7CA /* AddressRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestModel.swift; sourceTree = "<group>"; };
 		A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchManager.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				A508BB6C287A882E00A37162 /* Extension */,
 				A57D2D2D287D99B8005EA7CA /* Manager */,
 				A57D2D2A287D9738005EA7CA /* Model */,
+				A540D8BB28900F1700B53A7E /* UI */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -170,6 +173,14 @@
 				A51081EC2871BF5C00A8D648 /* Info.plist */,
 			);
 			path = Hygrometer;
+			sourceTree = "<group>";
+		};
+		A540D8BB28900F1700B53A7E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A540D8B928900F1000B53A7E /* Measure.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		A57D2D2A287D9738005EA7CA /* Model */ = {
@@ -367,6 +378,7 @@
 				A5E8EA892886EC5600AF9158 /* EntryViewController.swift in Sources */,
 				A508BB64287A5C8D00A37162 /* PresentTableViewCell.swift in Sources */,
 				A57D2D2C287D99B4005EA7CA /* AddressSearchManager.swift in Sources */,
+				A540D8BA28900F1000B53A7E /* Measure.swift in Sources */,
 				A508BB5D287A560300A37162 /* PresentViewController.swift in Sources */,
 				A508BB68287A768A00A37162 /* SettingsViewController.swift in Sources */,
 				E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */,

@@ -53,7 +53,7 @@ class HomeViewController: UIViewController {
     label.textColor = .white
     label.text = "위치를 가져올 수 없습니다"
     label.textAlignment = .center
-    label.font = .systemFont(ofSize: 18.0, weight: .medium)
+    label.font = .systemFont(ofSize: Measure.Home.locationFontSize, weight: .medium)
 
     return label
   }()
@@ -61,7 +61,7 @@ class HomeViewController: UIViewController {
   lazy var percentageLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
-    label.font = .systemFont(ofSize: 80.0, weight: .bold)
+    label.font = .systemFont(ofSize: Measure.Home.percentageFontSize, weight: .bold)
 
     return label
   }()
@@ -76,7 +76,7 @@ class HomeViewController: UIViewController {
   lazy var dateLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
-    label.font = .systemFont(ofSize: 15.0, weight: .regular)
+    label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
 
     let now = Date()
     let formatter = DateFormatter()
@@ -90,7 +90,7 @@ class HomeViewController: UIViewController {
   lazy var lastUpdateLabel: UILabel = {
     let label = UILabel()
     label.text = " "
-    label.font = .systemFont(ofSize: 15.0, weight: .regular)
+    label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
     label.textColor = .white
 
     return label
@@ -100,6 +100,7 @@ class HomeViewController: UIViewController {
     let label = UILabel()
     label.textColor = .black
     label.text = "Bookmark"
+    label.font = .systemFont(ofSize: Measure.Home.bookmarkFontSize, weight: .regular)
 
     return label
   }()
@@ -190,7 +191,7 @@ class HomeViewController: UIViewController {
     }
 
     bearImage.snp.makeConstraints { make in
-      let width = UIScreen.main.bounds.width / 2.3
+      let width = Measure.Home.bearImageWidth
       let height = width * (1.1466)
       make.centerX.equalToSuperview()
       make.centerY.equalTo(backgroundView)
@@ -394,5 +395,15 @@ extension HomeViewController: CLLocationManagerDelegate {
 extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
+  }
+}
+
+extension Measure {
+  fileprivate struct Home {
+    static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
+    static let percentageFontSize: CGFloat = Measure(regular: 80, medium: 75, small: 65, tiny: 55).forScreen
+    static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
+    static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
+    static let bookmarkFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
   }
 }
