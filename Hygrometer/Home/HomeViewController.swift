@@ -51,7 +51,7 @@ class HomeViewController: UIViewController {
   lazy var currentLocationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
-    label.text = "서울특별시 은평구 불광동"
+    label.text = "위치를 가져올 수 없습니다"
     label.textAlignment = .center
     label.font = .systemFont(ofSize: 18.0, weight: .medium)
 
@@ -62,7 +62,6 @@ class HomeViewController: UIViewController {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: 80.0, weight: .bold)
-    label.text = "60%"
 
     return label
   }()
@@ -90,7 +89,7 @@ class HomeViewController: UIViewController {
 
   lazy var lastUpdateLabel: UILabel = {
     let label = UILabel()
-    label.text = "최근 업데이트 : 22:16"
+    label.text = " "
     label.font = .systemFont(ofSize: 15.0, weight: .regular)
     label.textColor = .white
 
