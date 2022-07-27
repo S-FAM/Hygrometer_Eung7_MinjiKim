@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import CoreLocation
+import WaterDrops
 
 class HomeViewController: UIViewController {
   // MARK: - Properties
@@ -26,7 +27,13 @@ class HomeViewController: UIViewController {
     return view
   }()
 
-  lazy var searchButton: UIButton = {
+  private lazy var headerBar: UIView = {
+    let view = UIView()
+
+    return view
+  }()
+
+  private lazy var searchButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
     button.tintColor = .white
@@ -37,7 +44,17 @@ class HomeViewController: UIViewController {
     return button
   }()
 
-  lazy var gearButton: UIButton = {
+  private lazy var currentLocationLabel: UILabel = {
+    let label = UILabel()
+    label.textColor = .white
+    label.text = "위치를 가져올 수 없습니다"
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: Measure.Home.locationFontSize, weight: .medium)
+
+    return label
+  }()
+
+  private lazy var gearButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
     button.tintColor = .white
@@ -48,15 +65,38 @@ class HomeViewController: UIViewController {
     return button
   }()
 
-  lazy var currentLocationLabel: UILabel = {
-    let label = UILabel()
-    label.textColor = .white
-    label.text = "위치를 가져올 수 없습니다"
-    label.textAlignment = .center
-    label.font = .systemFont(ofSize: Measure.Home.locationFontSize, weight: .medium)
+  private lazy var imageStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.distribution = .fill
+    stackView.alignment = .center
+    stackView.spacing = 15
 
-    return label
+    return stackView
   }()
+
+  private lazy var bearImage: UIImageView = {
+    let imageView = UIImageView()
+    imageView.image = UIImage(named: "bear")
+    imageView.contentMode = .scaleAspectFit
+
+    return imageView
+  }()
+
+  /// - Parameters:
+  ///   - Length: water drops movement range
+  ///   - Duration: water drops movement speed
+  private lazy var waterDrops = WaterDropsView(
+    frame: imageStackView.frame,
+    direction: .up,
+    dropNum: 5,
+    color: UIColor.white.withAlphaComponent(0.7),
+    minDropSize: Measure.Home.waterDropsMinSize,
+    maxDropSize: Measure.Home.waterDropsMaxSize,
+    minLength: 50,
+    maxLength: 100,
+    minDuration: 1,
+    maxDuration: 5)
 
   lazy var percentageLabel: UILabel = {
     let label = UILabel()
@@ -64,13 +104,6 @@ class HomeViewController: UIViewController {
     label.font = .systemFont(ofSize: Measure.Home.percentageFontSize, weight: .bold)
 
     return label
-  }()
-
-  lazy var bearImage: UIImageView = {
-    let imageView = UIImageView()
-    imageView.image = UIImage(named: "bear")
-
-    return imageView
   }()
 
   lazy var dateLabel: UILabel = {
@@ -150,6 +183,7 @@ class HomeViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     checkLocationAuthorization()
+    waterDrops.addAnimation()
   }
 
   // MARK: - Helpers
@@ -167,39 +201,81 @@ class HomeViewController: UIViewController {
     bookmarkStack.axis = .horizontal
     bookmarkStack.distribution = .equalCentering
 
-    [ backgroundView, percentageLabel, bearImage, searchButton, gearButton, currentLocationLabel, dateLabel, bookmarkStack, collectionView, lastUpdateLabel ]
-      .forEach { view.addSubview($0) }
+    // view
+
+    [backgroundView, bookmarkStack, collectionView].forEach {
+      view.addSubview($0)
+    }
 
     backgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.height.equalTo(UIScreen.main.bounds.height * 0.65)
     }
 
-    searchButton.snp.makeConstraints { make in
-      make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(24)
+    bookmarkStack.snp.makeConstraints { make in
+      make.top.equalTo(backgroundView.snp.bottom).offset(16)
+      make.leading.trailing.equalToSuperview().inset(24)
     }
 
-    gearButton.snp.makeConstraints { make in
-      make.trailing.top.equalTo(view.safeAreaLayoutGuide).inset(24)
+    collectionView.snp.makeConstraints { make in
+      make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
+      make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    // backgroundView
+
+    [headerBar, imageStackView, percentageLabel, dateLabel, lastUpdateLabel].forEach {
+      backgroundView.addSubview($0)
+    }
+
+    // headerBar
+    
+    headerBar.snp.makeConstraints { make in
+      make.top.equalTo(view.safeAreaLayoutGuide)
+      make.leading.trailing.equalToSuperview()
+      make.height.equalTo(50)
+    }
+
+    [searchButton, currentLocationLabel, gearButton].forEach {
+      headerBar.addSubview($0)
+    }
+
+    searchButton.snp.makeConstraints { make in
+      make.width.height.equalTo(50)
+      make.centerY.equalToSuperview()
+      make.leading.equalToSuperview().inset(8)
     }
 
     currentLocationLabel.snp.makeConstraints { make in
-      make.centerX.equalToSuperview()
-      make.centerY.equalTo(searchButton)
-      make.leading.equalTo(searchButton.snp.trailing).offset(4)
-      make.trailing.equalTo(gearButton.snp.leading).offset(-4)
+      make.center.equalToSuperview()
+    }
+
+    gearButton.snp.makeConstraints { make in
+      make.width.height.equalTo(50)
+      make.centerY.equalToSuperview()
+      make.trailing.equalToSuperview().inset(8)
+    }
+
+    // imageStackView
+    
+    imageStackView.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+
+    [waterDrops, bearImage].forEach {
+      imageStackView.addArrangedSubview($0)
     }
 
     bearImage.snp.makeConstraints { make in
       let width = Measure.Home.bearImageWidth
       let height = width * (1.1466)
-      make.centerX.equalToSuperview()
-      make.centerY.equalTo(backgroundView)
       make.width.equalTo(width); make.height.equalTo(height)
     }
 
+    // labels
+
     percentageLabel.snp.makeConstraints { make in
-      make.top.equalTo(bearImage.snp.bottom).offset(4)
+      make.top.equalTo(imageStackView.snp.bottom).offset(4)
       make.centerX.equalToSuperview()
     }
 
@@ -210,17 +286,7 @@ class HomeViewController: UIViewController {
 
     lastUpdateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(backgroundView.snp.bottom).offset(-8)
-    }
-
-    bookmarkStack.snp.makeConstraints { make in
-      make.top.equalTo(backgroundView.snp.bottom).offset(16)
-      make.leading.trailing.equalToSuperview().inset(24)
-    }
-
-    collectionView.snp.makeConstraints { make in
-      make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
-      make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+      make.bottom.equalToSuperview().offset(-8)
     }
   }
 
@@ -255,17 +321,47 @@ class HomeViewController: UIViewController {
   }
   
   func updateBackgroundColor() {
+    [waterDrops, bearImage].forEach {
+      $0.removeFromSuperview()
+    }
+    
+    var dropNum: Int = 10
+
     if let humidity = humidity {
       if humidity >= 80 {
         backgroundView.backgroundColor = .veryMosit
+        dropNum = 15
       } else if humidity >= 60 {
         backgroundView.backgroundColor = .moist
+        dropNum = 10
       } else if humidity >= 40 {
         backgroundView.backgroundColor = .comfortable
+        dropNum = 5
       } else if humidity >= 30 {
-        backgroundView.backgroundColor = .dry
+        dropNum = 2
       } else {
         backgroundView.backgroundColor = .veryDry
+        dropNum = 1
+      }
+
+      waterDrops = WaterDropsView(
+        frame: imageStackView.frame,
+        direction: .up,
+        dropNum: dropNum,
+        color: UIColor.white.withAlphaComponent(0.7),
+        minDropSize: Measure.Home.waterDropsMinSize,
+        maxDropSize: Measure.Home.waterDropsMaxSize,
+        minLength: 50,
+        maxLength: 100,
+        minDuration: 1,
+        maxDuration: 5)
+      
+      [waterDrops, bearImage].forEach {
+        imageStackView.addArrangedSubview($0)
+      }
+
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        self?.waterDrops.addAnimation()
       }
     }
   }
@@ -401,6 +497,8 @@ extension HomeViewController: BookmarkManagerDelegate {
 extension Measure {
   fileprivate struct Home {
     static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
+    static let waterDropsMinSize: CGFloat = Measure(regular: 10, medium: 10, small: 5, tiny: 5).forScreen
+    static let waterDropsMaxSize: CGFloat = Measure(regular: 20, medium: 20, small: 15, tiny: 15).forScreen
     static let percentageFontSize: CGFloat = Measure(regular: 80, medium: 75, small: 65, tiny: 55).forScreen
     static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
     static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
