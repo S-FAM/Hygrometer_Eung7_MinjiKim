@@ -29,7 +29,7 @@ class LoadingViewController: UIViewController {
   // MARK: - Helpers
   private func configureUI() {
     view.backgroundColor = .black
-    view.layer.opacity = 0.9
+    view.layer.opacity = 0.6
     
     view.addSubview(indicator)
     

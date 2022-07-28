@@ -49,7 +49,7 @@ class HomeViewController: UIViewController {
 
     return button
   }()
-
+  
   lazy var currentLocationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
@@ -280,13 +280,13 @@ class HomeViewController: UIViewController {
     let loadingVC = LoadingViewController()
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
-      self.humidity = humidity
-      self.percentageLabel.text = "\(humidity)%"
-      self.lastUpdateLabel.text = self.viewModel.currentTime
-      self.updateBackgroundColor()
-      self.collectionView.reloadData()
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         loadingVC.dismiss(animated: false)
+        self.humidity = humidity
+        self.percentageLabel.text = "\(humidity)%"
+        self.lastUpdateLabel.text = self.viewModel.currentTime
+        self.updateBackgroundColor()
+        self.collectionView.reloadData()
       }
     }
     loadingVC.modalPresentationStyle = .overFullScreen
@@ -383,7 +383,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         self.humidity = humidity
         self.updateBackgroundColor()
         self.collectionView.reloadData()
-        self.entryVC.dismiss(animated: true) /// EntryVC를 언제 비활성화 하는게 좋은지 논의해봐야함 ...
+        self.entryVC.dismiss(animated: true)
       }
     }
   }
