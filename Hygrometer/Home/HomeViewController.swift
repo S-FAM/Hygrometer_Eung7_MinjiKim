@@ -480,6 +480,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         self.updateBackgroundColor()
         self.collectionView.reloadData()
         self.entryVC.dismiss(animated: true)
+        self.locationManager.stopUpdatingLocation()
       }
     }
   }
@@ -504,7 +505,6 @@ extension HomeViewController: BookmarkManagerDelegate {
   }
 }
 
-
 extension Measure {
   fileprivate struct Home {
     static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
@@ -514,6 +514,8 @@ extension Measure {
     static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
     static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
     static let bookmarkFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
+  }
+}
 
 extension HomeViewController: PresentViewControllerDelegate {
   func didTapLocation(location: Location) {
