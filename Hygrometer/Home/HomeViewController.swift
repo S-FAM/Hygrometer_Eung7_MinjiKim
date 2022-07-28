@@ -16,6 +16,8 @@ class HomeViewController: UIViewController {
   var locationManager = CLLocationManager()
   var currentLocation: Location?
   var humidity: Int?
+  
+  let entryVC = EntryViewController()
 
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -188,7 +190,6 @@ class HomeViewController: UIViewController {
 
   // MARK: - Helpers
   private func showEntryVC() {
-    let entryVC = EntryViewController()
     entryVC.modalPresentationStyle = .fullScreen
     present(entryVC, animated: false)
   }
@@ -372,14 +373,20 @@ class HomeViewController: UIViewController {
     let lat = CLLocationDegrees(location.lon)!
     let lon = CLLocationDegrees(location.lat)!
     let requestModel = WeatherRequestModel(lat: lat, lon: lon)
+    let loadingVC = LoadingViewController()
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
-      self.humidity = humidity
-      self.percentageLabel.text = "\(humidity)%"
-      self.lastUpdateLabel.text = self.viewModel.currentTime
-      self.updateBackgroundColor()
-      self.collectionView.reloadData()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        loadingVC.dismiss(animated: false)
+        self.humidity = humidity
+        self.percentageLabel.text = "\(humidity)%"
+        self.lastUpdateLabel.text = self.viewModel.currentTime
+        self.updateBackgroundColor()
+        self.collectionView.reloadData()
+      }
     }
+    loadingVC.modalPresentationStyle = .overFullScreen
+    present(loadingVC, animated: false)
   }
   
   private func checkLocationAuthorization() {
@@ -394,11 +401,13 @@ class HomeViewController: UIViewController {
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
+    searchVC.delegate = self
     present(searchVC, animated: true)
   }
 
   @objc private func showBookmarkVC() {
     let bookmarkVC = PresentViewController(sceneType: .bookmark)
+    bookmarkVC.delegate = self
     present(bookmarkVC, animated: true)
   }
 
@@ -470,6 +479,7 @@ extension HomeViewController: CLLocationManagerDelegate {
         self.humidity = humidity
         self.updateBackgroundColor()
         self.collectionView.reloadData()
+        self.entryVC.dismiss(animated: true)
       }
     }
   }
@@ -494,6 +504,7 @@ extension HomeViewController: BookmarkManagerDelegate {
   }
 }
 
+
 extension Measure {
   fileprivate struct Home {
     static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
@@ -503,5 +514,9 @@ extension Measure {
     static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
     static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
     static let bookmarkFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
+
+extension HomeViewController: PresentViewControllerDelegate {
+  func didTapLocation(location: Location) {
+    updateHumidity(location: location)
   }
 }

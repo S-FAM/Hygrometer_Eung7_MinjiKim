@@ -7,8 +7,11 @@
 
 import UIKit
 
-class PresentViewController: UIViewController {
+protocol PresentViewControllerDelegate: AnyObject {
+  func didTapLocation(location: Location)
+}
 
+class PresentViewController: UIViewController {
   private lazy var topFadeView: UIView = {
     let view = UIView()
 
@@ -75,13 +78,15 @@ class PresentViewController: UIViewController {
   }()
 
   private var sceneType: SceneType
+  
+  let bookmarkManager = BookmarkManager.shared
+  weak var delegate: PresentViewControllerDelegate?
 
   private var regionList: [Location] = []
 
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
-  var dismissCompletion: () -> Void = {}
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -209,12 +214,18 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
     if sceneType == .searh {
+      cell.sceneType = .searh
       cell.setupLocation(location: regionList[indexPath.row])
       cell.setupUI()
     } else {
+      cell.sceneType =  .bookmark
       let bookmarks = BookmarkManager.shared.bookmarks
       cell.setupLocation(location: bookmarks[indexPath.row])
       cell.setupUI()
+    }
+    
+    cell.onChangedBookmarks = {
+      tableView.reloadData()
     }
 
     return cell
@@ -225,6 +236,20 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     guard (currentRow % display) == (display - 2) && (currentRow / display) == (currentPage - 2) else { return }
 
     requestRegionList(isReset: false)
+  }
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if sceneType == .bookmark {
+      let location = bookmarkManager.bookmarks[indexPath.row]
+      dismiss(animated: true) { [weak self] in
+        self?.delegate?.didTapLocation(location: location)
+      }
+    } else {
+      let location = regionList[indexPath.row]
+      dismiss(animated: true) { [weak self] in
+        self?.delegate?.didTapLocation(location: location)
+      }
+    }
   }
 }
 

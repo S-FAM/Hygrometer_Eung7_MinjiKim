@@ -26,6 +26,8 @@
 		A57D2D2C287D99B4005EA7CA /* AddressSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */; };
 		A5CF83082884376B00514958 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CF83072884376B00514958 /* UserDefaultsManager.swift */; };
 		A5E8EA892886EC5600AF9158 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8EA882886EC5600AF9158 /* EntryViewController.swift */; };
+		E58131AD288F5784000DB8C9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131AC288F5784000DB8C9 /* LoadingViewController.swift */; };
+		E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */; };
 		E595611D2885A5F70074E677 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595611C2885A5F70074E677 /* BookmarkManager.swift */; };
 		E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */; };
 		E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */; };
@@ -58,6 +60,7 @@
 		A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchManager.swift; sourceTree = "<group>"; };
 		A5CF83072884376B00514958 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		A5E8EA882886EC5600AF9158 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
+		E58131AC288F5784000DB8C9 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		E595611C2885A5F70074E677 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
 		E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
 		E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
@@ -75,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */,
 				A51081F42871C12200A8D648 /* Alamofire in Frameworks */,
 				A51081F72871C12E00A8D648 /* SnapKit in Frameworks */,
 				05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */,
@@ -164,6 +168,7 @@
 			children = (
 				A508BB6E287A89E300A37162 /* Common */,
 				A5E8EA8A2886EC5900AF9158 /* Entry */,
+				E58131AB288F5776000DB8C9 /* Loading */,
 				E5A2E6C12879925400C9D5EB /* Home */,
 				A508BB5E287A560900A37162 /* Present */,
 				A508BB69287A768D00A37162 /* Settings */,
@@ -213,6 +218,14 @@
 			path = Entry;
 			sourceTree = "<group>";
 		};
+		E58131AB288F5776000DB8C9 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				E58131AC288F5784000DB8C9 /* LoadingViewController.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
 		E5A2E6C12879925400C9D5EB /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +267,7 @@
 			packageProductDependencies = (
 				A51081F32871C12200A8D648 /* Alamofire */,
 				A51081F62871C12E00A8D648 /* SnapKit */,
+				E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */,
 			);
 			productName = Hygrometer;
 			productReference = A51081DB2871BF5A00A8D648 /* Hygrometer.app */;
@@ -286,6 +300,7 @@
 			packageReferences = (
 				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
 			);
 			productRefGroup = A51081DC2871BF5A00A8D648 /* Products */;
 			projectDirPath = "";
@@ -394,6 +409,7 @@
 				E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */,
 				E5A2E6C72879A52A00C9D5EB /* HomeCollectionViewCell.swift in Sources */,
 				E595611D2885A5F70074E677 /* BookmarkManager.swift in Sources */,
+				E58131AD288F5784000DB8C9 /* LoadingViewController.swift in Sources */,
 				E5C2E4DD287DC1380022C532 /* WeatherRequestModel.swift in Sources */,
 				E5C2E4DB287DBF430022C532 /* WeatherResponseModel.swift in Sources */,
 			);
@@ -551,7 +567,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -579,7 +595,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -623,6 +639,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -635,6 +659,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
