@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 protocol PresentViewControllerDelegate: AnyObject {
   func didTapLocation(location: Location)
@@ -241,13 +242,13 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if sceneType == .bookmark {
       let location = bookmarkManager.bookmarks[indexPath.row]
-      dismiss(animated: true) { [weak self] in
-        self?.delegate?.didTapLocation(location: location)
+      dismiss(animated: true) {
+        self.delegate?.didTapLocation(location: location)
       }
     } else {
       let location = regionList[indexPath.row]
-      dismiss(animated: true) { [weak self] in
-        self?.delegate?.didTapLocation(location: location)
+      dismiss(animated: true) {
+        self.delegate?.didTapLocation(location: location)
       }
     }
   }

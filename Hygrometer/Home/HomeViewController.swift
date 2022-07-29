@@ -84,6 +84,25 @@ class HomeViewController: UIViewController {
 
     return imageView
   }()
+  
+  private lazy var toCurrnetLocationButton: UIButton = {
+    var config = UIButton.Configuration.filled()
+    config.image = UIImage(systemName: "location.fill")
+    config.imagePadding = 4
+    config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration.init(pointSize: 12)
+    config.baseForegroundColor = .buttonForegroundColor
+    config.baseBackgroundColor = .buttonBackgroundColor
+    config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
+    config.cornerStyle = .capsule
+    var container = AttributeContainer()
+    container.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
+    container.foregroundColor = UIColor.buttonForegroundColor
+    config.attributedTitle = AttributedString("현위치로", attributes: container)
+    let button = UIButton(configuration: config)
+    button.addTarget(self, action: #selector(didTapToCurrentLocationButton), for: .touchUpInside)
+    
+    return button
+  }()
 
   /// - Parameters:
   ///   - Length: water drops movement range
@@ -225,7 +244,7 @@ class HomeViewController: UIViewController {
 
     // backgroundView
 
-    [headerBar, imageStackView, percentageLabel, dateLabel, lastUpdateLabel].forEach {
+    [headerBar, imageStackView, percentageLabel, dateLabel, lastUpdateLabel, toCurrnetLocationButton].forEach {
       backgroundView.addSubview($0)
     }
 
@@ -279,15 +298,20 @@ class HomeViewController: UIViewController {
       make.top.equalTo(imageStackView.snp.bottom).offset(4)
       make.centerX.equalToSuperview()
     }
+    
+    toCurrnetLocationButton.snp.makeConstraints { make in
+      make.bottom.equalToSuperview().offset(-8)
+      make.centerX.equalToSuperview()
+    }
 
     dateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(lastUpdateLabel.snp.top).offset(-4)
+      make.bottom.equalTo(lastUpdateLabel.snp.top)
     }
 
     lastUpdateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalToSuperview().offset(-8)
+      make.bottom.equalTo(toCurrnetLocationButton.snp.top).offset(-4)
     }
   }
 
@@ -383,6 +407,7 @@ class HomeViewController: UIViewController {
         self.lastUpdateLabel.text = self.viewModel.currentTime
         self.updateBackgroundColor()
         self.collectionView.reloadData()
+        self.locationManager.stopUpdatingLocation()
       }
     }
     loadingVC.modalPresentationStyle = .overFullScreen
@@ -415,8 +440,8 @@ class HomeViewController: UIViewController {
     let settingsVC = SettingsViewController()
     navigationController?.pushViewController(settingsVC, animated: true)
   }
-
-  @objc private func didTapUpdateButton() {
+  
+  @objc private func didTapToCurrentLocationButton() {
     locationManager.startUpdatingLocation()
   }
 }
@@ -460,27 +485,31 @@ extension HomeViewController: CLLocationManagerDelegate {
       let lat = location.coordinate.latitude
       let lon = location.coordinate.longitude
       let request = WeatherRequestModel(lat: lat, lon: lon)
+      let loadingVC = LoadingViewController()
+      loadingVC.modalPresentationStyle = .overFullScreen
+      present(loadingVC, animated: false)
       WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
         guard let self = self else { return }
         let cllLocation = CLLocation(latitude: lat, longitude: lon)
         geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
           guard let placemarks = placemarks else { return }
           guard let address = placemarks.first else { return }
-          DispatchQueue.main.async {
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            loadingVC.dismiss(animated: false)
+            self.percentageLabel.text = "\(humidity)%"
+            self.lastUpdateLabel.text = self.viewModel.currentTime
+            self.humidity = humidity
+            self.updateBackgroundColor()
+            self.collectionView.reloadData()
+            self.entryVC.dismiss(animated: true)
             let administrativeArea = address.administrativeArea ?? ""
             let locality = address.locality ?? ""
             let subLocality = address.subLocality ?? ""
             let text = administrativeArea + " " + locality + " " + subLocality
             self.currentLocationLabel.text = text
+            self.locationManager.stopUpdatingLocation()
           }
         }
-        self.percentageLabel.text = "\(humidity)%"
-        self.lastUpdateLabel.text = self.viewModel.currentTime
-        self.humidity = humidity
-        self.updateBackgroundColor()
-        self.collectionView.reloadData()
-        self.entryVC.dismiss(animated: true)
-        self.locationManager.stopUpdatingLocation()
       }
     }
   }
