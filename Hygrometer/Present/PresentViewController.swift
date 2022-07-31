@@ -28,6 +28,21 @@ class PresentViewController: UIViewController {
     return view
   }()
 
+  private lazy var headerBar: UIView = {
+    let view = UIView()
+
+    return view
+  }()
+
+  private lazy var editButton: UIButton = {
+    let button = UIButton()
+    button.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
+    button.tintColor = .black
+    button.addTarget(self, action: #selector(editMode), for: .touchUpInside)
+
+    return button
+  }()
+
   private lazy var closeButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "xmark"), for: .normal)
@@ -87,6 +102,8 @@ class PresentViewController: UIViewController {
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
+  
+  private let inset: CGFloat = 8
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -121,22 +138,38 @@ class PresentViewController: UIViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    [closeButton, searchBar, titleLabel, emptyLabel, tableView].forEach {
+    [headerBar, searchBar, emptyLabel, tableView].forEach {
       containerView.addSubview($0)
     }
 
-    let inset: CGFloat = 8
+    headerBar.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview().inset(inset)
+      make.height.equalTo(50)
+    }
+
+    [editButton, closeButton, titleLabel].forEach {
+      headerBar.addSubview($0)
+    }
+
+    editButton.snp.makeConstraints { make in
+      make.width.height.equalTo(50)
+      make.top.leading.equalToSuperview().inset(inset)
+      make.centerY.equalToSuperview()
+    }
 
     closeButton.snp.makeConstraints { make in
       make.width.height.equalTo(50)
       make.top.trailing.equalToSuperview().inset(inset)
+      make.centerY.equalToSuperview()
     }
 
-    [searchBar, titleLabel].forEach {
-      $0.snp.makeConstraints { make in
-        make.top.equalTo(closeButton.snp.bottom)
-        make.leading.trailing.equalToSuperview().inset(inset)
-      }
+    titleLabel.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+
+    searchBar.snp.makeConstraints { make in
+      make.top.equalTo(headerBar.snp.bottom)
+      make.leading.trailing.equalToSuperview().inset(inset)
     }
 
     [emptyLabel, tableView].forEach {
@@ -151,15 +184,24 @@ class PresentViewController: UIViewController {
     switch sceneType {
     case .searh:
       searchBar.becomeFirstResponder()
-      searchBar.isHidden = false
+      editButton.isHidden = true
       titleLabel.isHidden = true
       emptyLabel.text = "검색 결과가 없습니다."
 
     case .bookmark:
       searchBar.isHidden = true
-      titleLabel.isHidden = false
       emptyLabel.text = "북마크한 지역이 없습니다."
       isHiddenEmptyLabel(dataCount: BookmarkManager.shared.bookmarks.count)
+
+      headerBar.snp.remakeConstraints { make in
+        make.top.leading.trailing.equalToSuperview().inset(inset)
+        make.height.equalTo(100)
+      }
+
+      tableView.snp.remakeConstraints { make in
+        make.top.equalTo(headerBar.snp.bottom).offset(inset)
+        make.leading.trailing.bottom.equalToSuperview()
+      }
     }
   }
 
@@ -191,6 +233,18 @@ class PresentViewController: UIViewController {
       emptyLabel.isHidden = false
     } else {
       emptyLabel.isHidden = true
+    }
+  }
+
+  @objc func editMode() {
+    let editImage = editButton.imageView?.image
+
+    if editImage == UIImage(systemName: "slider.horizontal.3") {
+      editButton.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
+      self.tableView.setEditing(true, animated: true)
+    } else {
+      editButton.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
+      self.tableView.setEditing(false, animated: true)
     }
   }
 
@@ -251,6 +305,22 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       }
     }
   }
+  
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    if editingStyle == .delete {
+      let location = bookmarkManager.bookmarks[indexPath.row]
+      bookmarkManager.removeBookmark(location: location)
+      tableView.reloadData()
+    }
+  }
+  
+//  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//      var tasks = self.tasks
+//      let task = tasks[sourceIndexPath.row]
+//      tasks.remove(at: sourceIndexPath.row)
+//      tasks.insert(task, at: destinationIndexPath.row)
+//      self.tasks = tasks
+//  }
 }
 
 extension PresentViewController: UISearchBarDelegate {
