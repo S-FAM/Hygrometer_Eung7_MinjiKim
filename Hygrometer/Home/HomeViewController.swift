@@ -340,7 +340,7 @@ class HomeViewController: UIViewController {
   
   func updateBackgroundColor() {
     var dropNum: Int = 10
-    
+    print("dd")
     if let humidity = humidity {
       if humidity >= 80 {
         backgroundView.backgroundColor = .veryMosit
@@ -451,6 +451,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    self.locationManager.stopUpdatingLocation()
     if let location = locations.first {
       let geocoder = CLGeocoder()
       let locale = Locale(identifier: "Ko-KR")
@@ -479,7 +480,6 @@ extension HomeViewController: CLLocationManagerDelegate {
             let subLocality = address.subLocality ?? ""
             let text = administrativeArea + " " + locality + " " + subLocality
             self.currentLocationLabel.text = text
-            self.locationManager.stopUpdatingLocation()
           }
         }
       }
