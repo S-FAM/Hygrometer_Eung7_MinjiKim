@@ -19,7 +19,7 @@ class LoadingViewController: UIViewController {
     
     return view
   }()
-  
+    
   // MARK: - LifeCycle
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -66,17 +66,7 @@ class HomeViewController: UIViewController {
 
     return button
   }()
-
-  private lazy var imageStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.alignment = .center
-    stackView.spacing = 15
-
-    return stackView
-  }()
-
+  
   private lazy var bearImage: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "bear")
@@ -107,18 +97,22 @@ class HomeViewController: UIViewController {
   /// - Parameters:
   ///   - Length: water drops movement range
   ///   - Duration: water drops movement speed
-  private lazy var waterDrops = WaterDropsView(
-    frame: imageStackView.frame,
-    direction: .up,
-    dropNum: 5,
-    color: UIColor.white.withAlphaComponent(0.7),
-    minDropSize: Measure.Home.waterDropsMinSize,
-    maxDropSize: Measure.Home.waterDropsMaxSize,
-    minLength: 50,
-    maxLength: 100,
-    minDuration: 1,
-    maxDuration: 5)
+  private lazy var waterDrops: WaterDropsView  = {
+    let drops = WaterDropsView(
+      frame: CGRect(x: 0, y: 0, width: 0, height: 0),
+      direction: .up,
+      dropNum: 50,
+      color: UIColor.white.withAlphaComponent(0.7),
+      minDropSize: Measure.Home.waterDropsMinSize,
+      maxDropSize: Measure.Home.waterDropsMaxSize,
+      minLength: 50,
+      maxLength: 120,
+      minDuration: 1,
+      maxDuration: 3
+    )
 
+    return drops
+  }()
   lazy var percentageLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
@@ -244,7 +238,7 @@ class HomeViewController: UIViewController {
 
     // backgroundView
 
-    [headerBar, imageStackView, percentageLabel, dateLabel, lastUpdateLabel, toCurrnetLocationButton].forEach {
+    [headerBar, percentageLabel, dateLabel, lastUpdateLabel, toCurrnetLocationButton, waterDrops, bearImage ].forEach {
       backgroundView.addSubview($0)
     }
 
@@ -275,27 +269,26 @@ class HomeViewController: UIViewController {
       make.centerY.equalToSuperview()
       make.trailing.equalToSuperview().inset(8)
     }
-
-    // imageStackView
     
-    imageStackView.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-    }
-
-    [waterDrops, bearImage].forEach {
-      imageStackView.addArrangedSubview($0)
-    }
-
     bearImage.snp.makeConstraints { make in
+      make.centerX.centerY.equalToSuperview()
       let width = Measure.Home.bearImageWidth
       let height = width * (1.1466)
-      make.width.equalTo(width); make.height.equalTo(height)
+      make.width.equalTo(width)
+      make.height.equalTo(height)
+    }
+    
+    waterDrops.snp.makeConstraints { make in
+      make.bottom.equalTo(bearImage.snp.top)
+      make.top.equalTo(headerBar.snp.bottom)
+      make.width.equalTo(50)
+      make.centerX.equalTo(bearImage)
     }
 
     // labels
 
     percentageLabel.snp.makeConstraints { make in
-      make.top.equalTo(imageStackView.snp.bottom).offset(4)
+      make.top.equalTo(bearImage.snp.bottom).offset(4)
       make.centerX.equalToSuperview()
     }
     
@@ -346,49 +339,28 @@ class HomeViewController: UIViewController {
   }
   
   func updateBackgroundColor() {
-    [waterDrops, bearImage].forEach {
-      $0.removeFromSuperview()
-    }
-    
     var dropNum: Int = 10
-
+    
     if let humidity = humidity {
       if humidity >= 80 {
         backgroundView.backgroundColor = .veryMosit
-        dropNum = 15
+        dropNum = 20
       } else if humidity >= 60 {
         backgroundView.backgroundColor = .moist
-        dropNum = 10
+        dropNum = 15
       } else if humidity >= 40 {
         backgroundView.backgroundColor = .comfortable
         dropNum = 5
       } else if humidity >= 30 {
+        backgroundView.backgroundColor = .dry
         dropNum = 2
       } else {
         backgroundView.backgroundColor = .veryDry
         dropNum = 1
       }
-
-      waterDrops = WaterDropsView(
-        frame: imageStackView.frame,
-        direction: .up,
-        dropNum: dropNum,
-        color: UIColor.white.withAlphaComponent(0.7),
-        minDropSize: Measure.Home.waterDropsMinSize,
-        maxDropSize: Measure.Home.waterDropsMaxSize,
-        minLength: 50,
-        maxLength: 100,
-        minDuration: 1,
-        maxDuration: 5)
-      
-      [waterDrops, bearImage].forEach {
-        imageStackView.addArrangedSubview($0)
-      }
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-        self?.waterDrops.addAnimation()
-      }
     }
+    waterDrops.dropNum = dropNum
+    waterDrops.updateAnimation()
   }
   
   private func updateHumidity(location: Location) {
@@ -422,7 +394,7 @@ class HomeViewController: UIViewController {
       break
     }
   }
-
+  
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
