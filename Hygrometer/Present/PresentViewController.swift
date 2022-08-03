@@ -34,15 +34,6 @@ class PresentViewController: UIViewController {
     return view
   }()
 
-  private lazy var editButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
-    button.tintColor = .black
-    button.addTarget(self, action: #selector(editMode), for: .touchUpInside)
-
-    return button
-  }()
-
   private lazy var closeButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "xmark"), for: .normal)
@@ -78,6 +69,9 @@ class PresentViewController: UIViewController {
     tableView.keyboardDismissMode = .onDrag
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.dragDelegate = self
+    tableView.dropDelegate = self
+    tableView.dragInteractionEnabled = true
     tableView.register(PresentTableViewCell.self, forCellReuseIdentifier: PresentTableViewCell.identifier)
 
     return tableView
@@ -104,6 +98,8 @@ class PresentViewController: UIViewController {
   private let display: Int = 10
   
   private let inset: CGFloat = 8
+  
+  private var isSwipeRow: Bool = false
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -147,14 +143,8 @@ class PresentViewController: UIViewController {
       make.height.equalTo(50)
     }
 
-    [editButton, closeButton, titleLabel].forEach {
+    [closeButton, titleLabel].forEach {
       headerBar.addSubview($0)
-    }
-
-    editButton.snp.makeConstraints { make in
-      make.width.height.equalTo(50)
-      make.top.leading.equalToSuperview().inset(inset)
-      make.centerY.equalToSuperview()
     }
 
     closeButton.snp.makeConstraints { make in
@@ -184,7 +174,6 @@ class PresentViewController: UIViewController {
     switch sceneType {
     case .searh:
       searchBar.becomeFirstResponder()
-      editButton.isHidden = true
       titleLabel.isHidden = true
       emptyLabel.text = "검색 결과가 없습니다."
 
@@ -233,18 +222,6 @@ class PresentViewController: UIViewController {
       emptyLabel.isHidden = false
     } else {
       emptyLabel.isHidden = true
-    }
-  }
-
-  @objc func editMode() {
-    let editImage = editButton.imageView?.image
-
-    if editImage == UIImage(systemName: "slider.horizontal.3") {
-      editButton.setImage(UIImage(systemName: "checkmark.square"), for: .normal)
-      self.tableView.setEditing(true, animated: true)
-    } else {
-      editButton.setImage(UIImage(systemName: "slider.horizontal.3"), for: .normal)
-      self.tableView.setEditing(false, animated: true)
     }
   }
 
@@ -306,21 +283,34 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     }
   }
   
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    if editingStyle == .delete {
-      let location = bookmarkManager.bookmarks[indexPath.row]
-      bookmarkManager.removeBookmark(location: location)
-      tableView.reloadData()
-    }
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    let location = bookmarkManager.bookmarks[sourceIndexPath.row]
+    var bookmarks = BookmarkManager.shared.bookmarks
+
+    let moveCell = bookmarks[sourceIndexPath.row]
+    bookmarks.remove(at: sourceIndexPath.row)
+    bookmarks.insert(moveCell, at: destinationIndexPath.row)
+
+    BookmarkManager.shared.removeBookmark(index: sourceIndexPath.row)
+    BookmarkManager.shared.insertBookmark(location: location, index: destinationIndexPath.row)
   }
-  
-//  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//      var tasks = self.tasks
-//      let task = tasks[sourceIndexPath.row]
-//      tasks.remove(at: sourceIndexPath.row)
-//      tasks.insert(task, at: destinationIndexPath.row)
-//      self.tasks = tasks
-//  }
+}
+
+extension PresentViewController: UITableViewDragDelegate {
+  func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    return [UIDragItem(itemProvider: NSItemProvider())]
+  }
+}
+
+extension PresentViewController: UITableViewDropDelegate {
+  func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+    if session.localDragSession != nil {
+      return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+  }
+
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {}
 }
 
 extension PresentViewController: UISearchBarDelegate {
