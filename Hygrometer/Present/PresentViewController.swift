@@ -67,11 +67,12 @@ class PresentViewController: UIViewController {
     tableView.backgroundColor = .clear
     tableView.showsVerticalScrollIndicator = false
     tableView.keyboardDismissMode = .onDrag
+
     tableView.dataSource = self
     tableView.delegate = self
     tableView.dragDelegate = self
     tableView.dropDelegate = self
-    tableView.dragInteractionEnabled = true
+
     tableView.register(PresentTableViewCell.self, forCellReuseIdentifier: PresentTableViewCell.identifier)
 
     return tableView
@@ -87,8 +88,8 @@ class PresentViewController: UIViewController {
   }()
 
   private var sceneType: SceneType
-  
-  let bookmarkManager = BookmarkManager.shared
+
+  private let bookmarkManager = BookmarkManager.shared
   weak var delegate: PresentViewControllerDelegate?
 
   private var regionList: [Location] = []
@@ -96,10 +97,8 @@ class PresentViewController: UIViewController {
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
-  
+
   private let inset: CGFloat = 8
-  
-  private var isSwipeRow: Bool = false
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -174,13 +173,15 @@ class PresentViewController: UIViewController {
     switch sceneType {
     case .searh:
       searchBar.becomeFirstResponder()
+      tableView.dragInteractionEnabled = false
       titleLabel.isHidden = true
       emptyLabel.text = "검색 결과가 없습니다."
 
     case .bookmark:
+      tableView.dragInteractionEnabled = true
       searchBar.isHidden = true
       emptyLabel.text = "북마크한 지역이 없습니다."
-      isHiddenEmptyLabel(dataCount: BookmarkManager.shared.bookmarks.count)
+      isHiddenEmptyLabel(dataCount: bookmarkManager.bookmarks.count)
 
       headerBar.snp.remakeConstraints { make in
         make.top.leading.trailing.equalToSuperview().inset(inset)
@@ -199,6 +200,7 @@ class PresentViewController: UIViewController {
     topFadeView.addGestureRecognizer(tapGesture)
   }
 
+  /// Search for a region.
   private func requestRegionList(isReset: Bool) {
     if isReset {
       regionList = []
@@ -230,13 +232,11 @@ class PresentViewController: UIViewController {
   }
 }
 
+// MARK: - UITabaleView
+
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if sceneType == .searh {
-      return regionList.count
-    } else {
-      return BookmarkManager.shared.bookmarks.count
-    }                                         
+    return sceneType == .searh ? regionList.count : bookmarkManager.bookmarks.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -247,14 +247,12 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     if sceneType == .searh {
       cell.sceneType = .searh
       cell.setupLocation(location: regionList[indexPath.row])
-      cell.setupUI()
     } else {
-      cell.sceneType =  .bookmark
-      let bookmarks = BookmarkManager.shared.bookmarks
-      cell.setupLocation(location: bookmarks[indexPath.row])
-      cell.setupUI()
+      cell.sceneType = .bookmark
+      cell.setupLocation(location: bookmarkManager.bookmarks[indexPath.row])
     }
-    
+
+    cell.setupUI()
     cell.onChangedBookmarks = {
       tableView.reloadData()
     }
@@ -268,41 +266,36 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
 
     requestRegionList(isReset: false)
   }
-  
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if sceneType == .bookmark {
-      let location = bookmarkManager.bookmarks[indexPath.row]
-      dismiss(animated: true) { [weak self] in
-        self?.delegate?.didTapLocation(location: location)
-      }
-    } else {
-      let location = regionList[indexPath.row]
-      dismiss(animated: true) { [weak self] in
-        self?.delegate?.didTapLocation(location: location)
-      }
+    let row = indexPath.row
+    let location = sceneType == .searh ? regionList[row] : bookmarkManager.bookmarks[row]
+    dismiss(animated: true) { [weak self] in
+      self?.delegate?.didTapLocation(location: location)
     }
   }
-  
-  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-    let location = bookmarkManager.bookmarks[sourceIndexPath.row]
-    var bookmarks = BookmarkManager.shared.bookmarks
 
-    let moveCell = bookmarks[sourceIndexPath.row]
+  /// Required for sorting bookmarks.
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    var bookmarks = bookmarkManager.bookmarks
+    let location = bookmarks[sourceIndexPath.row]
+
     bookmarks.remove(at: sourceIndexPath.row)
-    bookmarks.insert(moveCell, at: destinationIndexPath.row)
+    bookmarks.insert(location, at: destinationIndexPath.row)
 
     BookmarkManager.shared.removeBookmark(index: sourceIndexPath.row)
     BookmarkManager.shared.insertBookmark(location: location, index: destinationIndexPath.row)
   }
 }
 
-extension PresentViewController: UITableViewDragDelegate {
+// MARK: - UITableView Drag & Drop
+
+extension PresentViewController: UITableViewDragDelegate, UITableViewDropDelegate {
+  /// Required for draging rows.
   func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
     return [UIDragItem(itemProvider: NSItemProvider())]
   }
-}
 
-extension PresentViewController: UITableViewDropDelegate {
   func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
     if session.localDragSession != nil {
       return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
@@ -313,13 +306,15 @@ extension PresentViewController: UITableViewDropDelegate {
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {}
 }
 
+// MARK: - UISearchBar
+
 extension PresentViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
 
     guard let searchText = searchBar.text else { return }
 
-    self.keyword = searchText
+    keyword = searchText
     requestRegionList(isReset: true)
   }
 }

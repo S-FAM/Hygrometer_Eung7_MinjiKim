@@ -12,11 +12,11 @@ class HomeListViewModel {
   var bookmarks: [Location] {
     BookmarkManager.shared.bookmarks
   }
-  
+
   var numberOfItemsInSection: Int {
     return bookmarks.count
   }
-  
+
   var currentTime: String {
     let formatter = DateFormatter()
     let currentTime = Date()

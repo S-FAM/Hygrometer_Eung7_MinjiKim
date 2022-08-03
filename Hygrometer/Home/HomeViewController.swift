@@ -12,18 +12,17 @@ import WaterDrops
 
 class HomeViewController: UIViewController {
   // MARK: - Properties
-  let viewModel = HomeListViewModel()
-  var locationManager = CLLocationManager()
-  var currentLocation: Location?
-  var humidity: Int?
-  
-  let entryVC = EntryViewController()
+  private let viewModel = HomeListViewModel()
+  private var locationManager = CLLocationManager()
+  private var humidity: Int?
 
-  lazy var backgroundView: UIView = {
+  private let entryVC = EntryViewController()
+
+  private lazy var backgroundView: UIView = {
     let view = UIView()
     view.clipsToBounds = true
     view.layer.cornerRadius = 30.0
-    view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+    view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     view.backgroundColor = .comfortable
 
     return view
@@ -100,7 +99,7 @@ class HomeViewController: UIViewController {
     minDuration: 1,
     maxDuration: 5)
 
-  lazy var percentageLabel: UILabel = {
+  private lazy var percentageLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.Home.percentageFontSize, weight: .bold)
@@ -108,21 +107,20 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  lazy var dateLabel: UILabel = {
+  private lazy var dateLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
 
-    let now = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy.MM.dd.E"
-    let str = formatter.string(from: now)
+    let str = formatter.string(from: Date())
     label.text = str
 
     return label
   }()
 
-  lazy var lastUpdateLabel: UILabel = {
+  private lazy var lastUpdateLabel: UILabel = {
     let label = UILabel()
     label.text = " "
     label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
@@ -131,7 +129,7 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  lazy var bookmarkTitle: UILabel = {
+  private lazy var bookmarkTitle: UILabel = {
     let label = UILabel()
     label.textColor = .black
     label.text = "Bookmark"
@@ -140,7 +138,7 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  lazy var rightArrowButton: UIButton = {
+  private lazy var rightArrowButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "chevron.forward"), for: .normal)
     button.tintColor = .black
@@ -149,7 +147,7 @@ class HomeViewController: UIViewController {
     return button
   }()
 
-  lazy var collectionView: UICollectionView = {
+  private lazy var collectionView: UICollectionView = {
     let layout = createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.backgroundColor = .white
@@ -160,17 +158,17 @@ class HomeViewController: UIViewController {
 
     return collectionView
   }()
-  
-  lazy var locationAlert: UIAlertController = {
-    let alter = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
+
+  private lazy var locationAlert: UIAlertController = {
+    let alert = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
     let okAction = UIAlertAction(title: "확인", style: .default) { _ in
       UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     let noAction = UIAlertAction(title: "아니오", style: .destructive)
-    alter.addAction(okAction)
-    alter.addAction(noAction)
-    
-    return alter
+    alert.addAction(okAction)
+    alert.addAction(noAction)
+
+    return alert
   }()
 
   // MARK: - LifeCycle
@@ -270,7 +268,8 @@ class HomeViewController: UIViewController {
     bearImage.snp.makeConstraints { make in
       let width = Measure.Home.bearImageWidth
       let height = width * (1.1466)
-      make.width.equalTo(width); make.height.equalTo(height)
+      make.width.equalTo(width)
+      make.height.equalTo(height)
     }
 
     // labels
@@ -325,7 +324,7 @@ class HomeViewController: UIViewController {
     [waterDrops, bearImage].forEach {
       $0.removeFromSuperview()
     }
-    
+
     var dropNum: Int = 10
 
     if let humidity = humidity {
@@ -366,16 +365,18 @@ class HomeViewController: UIViewController {
       }
     }
   }
-  
+
   private func updateHumidity(location: Location) {
     currentLocationLabel.text = location.location
-    
+
     let lat = CLLocationDegrees(location.lon)!
     let lon = CLLocationDegrees(location.lat)!
     let requestModel = WeatherRequestModel(lat: lat, lon: lon)
     let loadingVC = LoadingViewController()
+
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
+
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         loadingVC.dismiss(animated: false)
         self.humidity = humidity
@@ -385,16 +386,16 @@ class HomeViewController: UIViewController {
         self.collectionView.reloadData()
       }
     }
+
     loadingVC.modalPresentationStyle = .overFullScreen
     present(loadingVC, animated: false)
   }
-  
+
   private func checkLocationAuthorization() {
     switch locationManager.authorizationStatus {
     case .denied:
       present(self.locationAlert, animated: true)
-    default:
-      break
+    default: break
     }
   }
 
@@ -446,7 +447,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return viewModel.numberOfItemsInSection
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     updateHumidity(location: viewModel.bookmarks[indexPath.row])
   }
@@ -454,34 +455,38 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    if let location = locations.first {
-      let geocoder = CLGeocoder()
-      let locale = Locale(identifier: "Ko-KR")
-      let lat = location.coordinate.latitude
-      let lon = location.coordinate.longitude
-      let request = WeatherRequestModel(lat: lat, lon: lon)
-      WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
-        guard let self = self else { return }
-        let cllLocation = CLLocation(latitude: lat, longitude: lon)
-        geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
-          guard let placemarks = placemarks else { return }
-          guard let address = placemarks.first else { return }
-          DispatchQueue.main.async {
-            let administrativeArea = address.administrativeArea ?? ""
-            let locality = address.locality ?? ""
-            let subLocality = address.subLocality ?? ""
-            let text = administrativeArea + " " + locality + " " + subLocality
-            self.currentLocationLabel.text = text
-          }
+    guard let location = locations.first else { return }
+
+    let geocoder = CLGeocoder()
+    let locale = Locale(identifier: "Ko-KR")
+    let lat = location.coordinate.latitude
+    let lon = location.coordinate.longitude
+    let request = WeatherRequestModel(lat: lat, lon: lon)
+
+    WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
+      guard let self = self else { return }
+
+      let cllLocation = CLLocation(latitude: lat, longitude: lon)
+      geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
+        guard let placemarks = placemarks,
+              let address = placemarks.first else { return }
+
+        DispatchQueue.main.async {
+          let administrativeArea = address.administrativeArea ?? ""
+          let locality = address.locality ?? ""
+          let subLocality = address.subLocality ?? ""
+          let text = administrativeArea + " " + locality + " " + subLocality
+          self.currentLocationLabel.text = text
         }
-        self.percentageLabel.text = "\(humidity)%"
-        self.lastUpdateLabel.text = self.viewModel.currentTime
-        self.humidity = humidity
-        self.updateBackgroundColor()
-        self.collectionView.reloadData()
-        self.entryVC.dismiss(animated: true)
-        self.locationManager.stopUpdatingLocation()
       }
+
+      self.percentageLabel.text = "\(humidity)%"
+      self.lastUpdateLabel.text = self.viewModel.currentTime
+      self.humidity = humidity
+      self.updateBackgroundColor()
+      self.collectionView.reloadData()
+      self.entryVC.dismiss(animated: true)
+      self.locationManager.stopUpdatingLocation()
     }
   }
 
@@ -493,8 +498,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     switch manager.authorizationStatus {
     case .denied:
       checkLocationAuthorization()
-    default:
-      break
+    default: break
     }
   }
 }

@@ -9,4 +9,3 @@ struct AddressRequestModel: Codable {
   let key, query, request, type, category: String
   let page: Int
 }
-

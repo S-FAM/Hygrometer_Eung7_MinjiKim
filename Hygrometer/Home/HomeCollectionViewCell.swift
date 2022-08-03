@@ -12,7 +12,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   static let id = "HomeCollectionViewCell"
 
-  lazy var background: UIView = {
+  private lazy var background: UIView = {
     let view = UIView()
     view.backgroundColor = .comfortable
     view.layer.cornerRadius = contentView.bounds.height / 2
@@ -20,7 +20,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
     return view
   }()
 
-  lazy var locationLabel: UILabel = {
+  private lazy var locationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.HomeCell.locationFontSize, weight: .semibold)
