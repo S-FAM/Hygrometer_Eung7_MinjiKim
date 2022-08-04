@@ -50,9 +50,3 @@ class HomeCollectionViewCell: UICollectionViewCell {
     }
   }
 }
-
-extension Measure {
-  fileprivate struct HomeCell {
-    static let locationFontSize: CGFloat = Measure(regular: 18, medium: 17, small: 16, tiny: 14).forScreen
-  }
-}

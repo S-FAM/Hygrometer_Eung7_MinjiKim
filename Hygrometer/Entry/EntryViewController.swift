@@ -70,11 +70,3 @@ class EntryViewController: UIViewController {
     }
   }
 }
-
-extension Measure {
-  fileprivate struct Entry {
-    static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
-    static let waterDropsMinSize: CGFloat = Measure(regular: 10, medium: 10, small: 5, tiny: 5).forScreen
-    static let waterDropsMaxSize: CGFloat = Measure(regular: 20, medium: 20, small: 15, tiny: 15).forScreen
-  }
-}

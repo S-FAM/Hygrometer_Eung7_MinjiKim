@@ -162,11 +162,14 @@ class PresentViewController: UIViewController {
       make.leading.trailing.equalToSuperview().inset(inset)
     }
 
-    [emptyLabel, tableView].forEach {
-      $0.snp.makeConstraints { make in
-        make.top.equalTo(searchBar.snp.bottom).offset(inset)
-        make.leading.trailing.bottom.equalToSuperview()
-      }
+    emptyLabel.snp.makeConstraints { make in
+      make.leading.trailing.equalToSuperview()
+      make.centerY.equalToSuperview().offset(20)
+    }
+
+    tableView.snp.makeConstraints { make in
+      make.top.equalTo(searchBar.snp.bottom).offset(inset)
+      make.leading.trailing.bottom.equalToSuperview()
     }
   }
 
@@ -254,8 +257,10 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     cell.setupUI()
-    cell.onChangedBookmarks = {
+    cell.onChangedBookmarks = { [weak self] in
+      guard let self = self else { return }
       tableView.reloadData()
+      self.isHiddenEmptyLabel(dataCount: self.bookmarkManager.bookmarks.count)
     }
 
     return cell
