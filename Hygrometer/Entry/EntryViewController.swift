@@ -6,75 +6,68 @@
 //
 
 import UIKit
+import SnapKit
 import WaterDrops
 
 class EntryViewController: UIViewController {
-
-  private lazy var stackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.alignment = .center
-    stackView.spacing = 15
-
-    return stackView
-  }()
-
+  
   private lazy var bearImage: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = UIImage(named: "bear")
+    imageView.image = #imageLiteral(resourceName: "곰돌이")
     imageView.contentMode = .scaleAspectFit
-
+    
     return imageView
   }()
-
+  
   /// - Parameters:
   ///   - Length: water drops movement range
   ///   - Duration: water drops movement speed
-  private lazy var waterDrops = WaterDropsView(
-    frame: stackView.frame,
-    direction: .up,
-    dropNum: 5,
-    color: UIColor.white.withAlphaComponent(0.7),
-    minDropSize: Measure.Entry.waterDropsMinSize,
-    maxDropSize: Measure.Entry.waterDropsMaxSize,
-    minLength: 50,
-    maxLength: 100,
-    minDuration: 1,
-    maxDuration: 5)
-
+  private lazy var waterDrops: WaterDropsView = {
+    let view = WaterDropsView(
+      frame: CGRect(x: 0, y: 0, width: 100, height: 100),
+      direction: .up,
+      dropNum: 15,
+      color: UIColor.white.withAlphaComponent(0.7),
+      minDropSize: Measure.Entry.waterDropsMinSize,
+      maxDropSize: Measure.Entry.waterDropsMaxSize,
+      minLength: 50,
+      maxLength: 80,
+      minDuration: 1,
+      maxDuration: 3
+    )
+    
+    return view
+  }()
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupUI()
   }
-
-//  override func viewDidAppear(_ animated: Bool) {
-//    super.viewDidAppear(animated)
-//    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-//      self?.dismiss(animated: true)
-//    }
-//  }
-
+  
   func setupUI() {
     view.backgroundColor = .gray
-
-    view.addSubview(stackView)
-
-    stackView.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-    }
-
+    
     [waterDrops, bearImage].forEach {
-      stackView.addArrangedSubview($0)
+      view.addSubview($0)
     }
-
+    
     bearImage.snp.makeConstraints { make in
       let width = Measure.Entry.bearImageWidth
       let height = width * (1.1466)
       make.width.equalTo(width); make.height.equalTo(height)
+      make.center.equalToSuperview()
     }
-
-    waterDrops.addAnimation()
+    
+    waterDrops.snp.makeConstraints { make in
+      make.bottom.equalTo(bearImage.snp.top)
+      make.centerX.equalToSuperview()
+      make.width.equalTo(30)
+      make.height.equalTo(120)
+    }
+    
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+      self.waterDrops.addAnimation()
+    }
   }
 }
 
