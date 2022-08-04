@@ -146,6 +146,15 @@ class HomeViewController: UIViewController {
 
     return button
   }()
+  
+  private lazy var emptyBookmarkLabel: UILabel = {
+    let label = UILabel()
+    label.text = "북마크된 지역이 없습니다."
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .medium)
+
+    return label
+  }()
 
   private lazy var collectionView: UICollectionView = {
     let layout = createLayout()
@@ -177,6 +186,7 @@ class HomeViewController: UIViewController {
     showEntryVC()
     configureUI()
     loadLocation()
+    isHiddenCollectionView()
     BookmarkManager.shared.delegate = self
   }
   
@@ -202,7 +212,7 @@ class HomeViewController: UIViewController {
 
     // view
 
-    [backgroundView, bookmarkStack, collectionView].forEach {
+    [backgroundView, bookmarkStack, emptyBookmarkLabel, collectionView].forEach {
       view.addSubview($0)
     }
 
@@ -219,6 +229,11 @@ class HomeViewController: UIViewController {
     collectionView.snp.makeConstraints { make in
       make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
       make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    emptyBookmarkLabel.snp.makeConstraints { make in
+      make.centerX.equalTo(collectionView)
+      make.centerY.equalTo(collectionView).offset(-20)
     }
 
     // backgroundView
@@ -399,6 +414,14 @@ class HomeViewController: UIViewController {
     }
   }
 
+  private func isHiddenCollectionView() {
+    if viewModel.numberOfItemsInSection == 0 {
+      collectionView.isHidden = true
+    } else {
+      collectionView.isHidden = false
+    }
+  }
+
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
@@ -506,6 +529,7 @@ extension HomeViewController: CLLocationManagerDelegate {
 extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
+    isHiddenCollectionView()
   }
 }
 
