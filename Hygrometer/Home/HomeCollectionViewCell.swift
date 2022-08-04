@@ -16,6 +16,9 @@ class HomeCollectionViewCell: UICollectionViewCell {
     let view = UIView()
     view.backgroundColor = .comfortable
     view.layer.cornerRadius = contentView.bounds.height / 2
+    view.layer.shadowColor = UIColor.black.cgColor
+    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+    view.layer.shadowOpacity = 0.5
 
     return view
   }()

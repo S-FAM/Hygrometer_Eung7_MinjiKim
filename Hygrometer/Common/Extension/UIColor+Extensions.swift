@@ -55,4 +55,12 @@ extension UIColor {
   static var veryMosit: UIColor {
     return UIColor(rgb: 0x546DE5)
   }
+  
+  static var buttonForegroundColor: UIColor {
+    return UIColor.init(rgb: 0x4C4C4C)
+  }
+  
+  static var buttonBackgroundColor: UIColor {
+    return UIColor.init(rgb: 0xD9D9D9)
+  }
 }

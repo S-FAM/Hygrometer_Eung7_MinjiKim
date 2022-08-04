@@ -20,11 +20,13 @@ class HomeViewController: UIViewController {
 
   private lazy var backgroundView: UIView = {
     let view = UIView()
-    view.clipsToBounds = true
     view.layer.cornerRadius = 30.0
     view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     view.backgroundColor = .comfortable
-
+    view.layer.shadowColor = UIColor.black.cgColor
+    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+    view.layer.shadowOpacity = 0.5
+    
     return view
   }()
 
@@ -65,17 +67,7 @@ class HomeViewController: UIViewController {
 
     return button
   }()
-
-  private lazy var imageStackView: UIStackView = {
-    let stackView = UIStackView()
-    stackView.axis = .vertical
-    stackView.distribution = .fill
-    stackView.alignment = .center
-    stackView.spacing = 15
-
-    return stackView
-  }()
-
+  
   private lazy var bearImage: UIImageView = {
     let imageView = UIImageView()
     imageView.image = UIImage(named: "bear")
@@ -83,30 +75,52 @@ class HomeViewController: UIViewController {
 
     return imageView
   }()
+  
+  private lazy var toCurrnetLocationButton: UIButton = {
+    var config = UIButton.Configuration.filled()
+    config.image = UIImage(systemName: "location.fill")
+    config.imagePadding = 4
+    config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration.init(pointSize: 12)
+    config.baseForegroundColor = .buttonForegroundColor
+    config.baseBackgroundColor = .buttonBackgroundColor
+    config.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
+    config.cornerStyle = .capsule
+    var container = AttributeContainer()
+    container.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
+    container.foregroundColor = UIColor.buttonForegroundColor
+    config.attributedTitle = AttributedString("현위치로", attributes: container)
+    let button = UIButton(configuration: config)
+    button.addTarget(self, action: #selector(didTapToCurrentLocationButton), for: .touchUpInside)
+    
+    return button
+  }()
 
   /// - Parameters:
   ///   - Length: water drops movement range
   ///   - Duration: water drops movement speed
-  private lazy var waterDrops = WaterDropsView(
-    frame: imageStackView.frame,
-    direction: .up,
-    dropNum: 5,
-    color: UIColor.white.withAlphaComponent(0.7),
-    minDropSize: Measure.Home.waterDropsMinSize,
-    maxDropSize: Measure.Home.waterDropsMaxSize,
-    minLength: 50,
-    maxLength: 100,
-    minDuration: 1,
-    maxDuration: 5)
-
-  private lazy var percentageLabel: UILabel = {
+  private lazy var waterDrops: WaterDropsView  = {
+    let drops = WaterDropsView(
+      frame: CGRect(x: 0, y: 0, width: 0, height: 0),
+      direction: .up,
+      dropNum: 50,
+      color: UIColor.white.withAlphaComponent(0.7),
+      minDropSize: Measure.Home.waterDropsMinSize,
+      maxDropSize: Measure.Home.waterDropsMaxSize,
+      minLength: 50,
+      maxLength: 80,
+      minDuration: 1,
+      maxDuration: 3
+    )
+    
+    return drops
+  }()
+  lazy var percentageLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.Home.percentageFontSize, weight: .bold)
-
+    
     return label
   }()
-
   private lazy var dateLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
@@ -156,8 +170,8 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  private lazy var collectionView: UICollectionView = {
-    let layout = createLayout()
+  lazy var collectionView: UICollectionView = {
+    let layout = HomeUtilities().createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.backgroundColor = .white
     collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
@@ -215,7 +229,7 @@ class HomeViewController: UIViewController {
     [backgroundView, bookmarkStack, emptyBookmarkLabel, collectionView].forEach {
       view.addSubview($0)
     }
-
+    
     backgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.height.equalTo(UIScreen.main.bounds.height * 0.65)
@@ -238,7 +252,7 @@ class HomeViewController: UIViewController {
 
     // backgroundView
 
-    [headerBar, imageStackView, percentageLabel, dateLabel, lastUpdateLabel].forEach {
+    [headerBar, percentageLabel, dateLabel, lastUpdateLabel, toCurrnetLocationButton, waterDrops, bearImage ].forEach {
       backgroundView.addSubview($0)
     }
 
@@ -269,63 +283,43 @@ class HomeViewController: UIViewController {
       make.centerY.equalToSuperview()
       make.trailing.equalToSuperview().inset(8)
     }
-
-    // imageStackView
     
-    imageStackView.snp.makeConstraints { make in
-      make.center.equalToSuperview()
-    }
-
-    [waterDrops, bearImage].forEach {
-      imageStackView.addArrangedSubview($0)
-    }
-
     bearImage.snp.makeConstraints { make in
+      make.centerX.centerY.equalToSuperview()
       let width = Measure.Home.bearImageWidth
       let height = width * (1.1466)
       make.width.equalTo(width)
       make.height.equalTo(height)
     }
+    
+    waterDrops.snp.makeConstraints { make in
+      make.bottom.equalTo(bearImage.snp.top).offset(-8)
+      make.top.equalTo(headerBar.snp.bottom)
+      make.width.equalTo(30)
+      make.centerX.equalTo(bearImage)
+    }
 
     // labels
 
     percentageLabel.snp.makeConstraints { make in
-      make.top.equalTo(imageStackView.snp.bottom).offset(4)
+      make.top.equalTo(bearImage.snp.bottom).offset(4)
+      make.centerX.equalToSuperview()
+    }
+    
+    toCurrnetLocationButton.snp.makeConstraints { make in
+      make.bottom.equalToSuperview().offset(-8)
       make.centerX.equalToSuperview()
     }
 
     dateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalTo(lastUpdateLabel.snp.top).offset(-4)
+      make.bottom.equalTo(lastUpdateLabel.snp.top)
     }
 
     lastUpdateLabel.snp.makeConstraints { make in
       make.centerX.equalToSuperview()
-      make.bottom.equalToSuperview().offset(-8)
+      make.bottom.equalTo(toCurrnetLocationButton.snp.top).offset(-4)
     }
-  }
-
-  private func createSection() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.9))
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
-    group.interItemSpacing = NSCollectionLayoutSpacing.fixed(12.0)
-
-    let section = NSCollectionLayoutSection(group: group)
-    section.interGroupSpacing = 8.0
-    section.orthogonalScrollingBehavior = .groupPaging
-    section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-
-    return section
-  }
-
-  private func createLayout() -> UICollectionViewCompositionalLayout {
-    let config = UICollectionViewCompositionalLayoutConfiguration()
-    let section = createSection()
-
-    return UICollectionViewCompositionalLayout(section: section, configuration: config)
   }
 
   private func loadLocation() {
@@ -336,49 +330,27 @@ class HomeViewController: UIViewController {
   }
   
   func updateBackgroundColor() {
-    [waterDrops, bearImage].forEach {
-      $0.removeFromSuperview()
-    }
-
     var dropNum: Int = 10
-
     if let humidity = humidity {
       if humidity >= 80 {
         backgroundView.backgroundColor = .veryMosit
-        dropNum = 15
+        dropNum = 20
       } else if humidity >= 60 {
         backgroundView.backgroundColor = .moist
-        dropNum = 10
+        dropNum = 15
       } else if humidity >= 40 {
         backgroundView.backgroundColor = .comfortable
         dropNum = 5
       } else if humidity >= 30 {
+        backgroundView.backgroundColor = .dry
         dropNum = 2
       } else {
         backgroundView.backgroundColor = .veryDry
         dropNum = 1
       }
-
-      waterDrops = WaterDropsView(
-        frame: imageStackView.frame,
-        direction: .up,
-        dropNum: dropNum,
-        color: UIColor.white.withAlphaComponent(0.7),
-        minDropSize: Measure.Home.waterDropsMinSize,
-        maxDropSize: Measure.Home.waterDropsMaxSize,
-        minLength: 50,
-        maxLength: 100,
-        minDuration: 1,
-        maxDuration: 5)
-      
-      [waterDrops, bearImage].forEach {
-        imageStackView.addArrangedSubview($0)
-      }
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-        self?.waterDrops.addAnimation()
-      }
     }
+    waterDrops.dropNum = dropNum
+    waterDrops.updateAnimation()
   }
 
   private func updateHumidity(location: Location) {
@@ -391,14 +363,14 @@ class HomeViewController: UIViewController {
 
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
-
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         loadingVC.dismiss(animated: false)
         self.humidity = humidity
+        self.updateBackgroundColor()
         self.percentageLabel.text = "\(humidity)%"
         self.lastUpdateLabel.text = self.viewModel.currentTime
-        self.updateBackgroundColor()
         self.collectionView.reloadData()
+        self.locationManager.stopUpdatingLocation()
       }
     }
 
@@ -421,7 +393,7 @@ class HomeViewController: UIViewController {
       collectionView.isHidden = false
     }
   }
-
+  
   // MARK: - Selectors
   @objc private func showSearchVC() {
     let searchVC = PresentViewController(sceneType: .searh)
@@ -439,8 +411,8 @@ class HomeViewController: UIViewController {
     let settingsVC = SettingsViewController()
     navigationController?.pushViewController(settingsVC, animated: true)
   }
-
-  @objc private func didTapUpdateButton() {
+  
+  @objc private func didTapToCurrentLocationButton() {
     locationManager.startUpdatingLocation()
   }
 }
@@ -466,7 +438,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
     return cell
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return viewModel.numberOfItemsInSection
   }
@@ -478,28 +450,36 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: CLLocationManagerDelegate {
   func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-    guard let location = locations.first else { return }
-
-    let geocoder = CLGeocoder()
-    let locale = Locale(identifier: "Ko-KR")
-    let lat = location.coordinate.latitude
-    let lon = location.coordinate.longitude
-    let request = WeatherRequestModel(lat: lat, lon: lon)
-
-    WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
-      guard let self = self else { return }
-
-      let cllLocation = CLLocation(latitude: lat, longitude: lon)
-      geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
-        guard let placemarks = placemarks,
-              let address = placemarks.first else { return }
-
-        DispatchQueue.main.async {
-          let administrativeArea = address.administrativeArea ?? ""
-          let locality = address.locality ?? ""
-          let subLocality = address.subLocality ?? ""
-          let text = administrativeArea + " " + locality + " " + subLocality
-          self.currentLocationLabel.text = text
+    self.locationManager.stopUpdatingLocation()
+    if let location = locations.first {
+      let geocoder = CLGeocoder()
+      let locale = Locale(identifier: "Ko-KR")
+      let lat = location.coordinate.latitude
+      let lon = location.coordinate.longitude
+      let request = WeatherRequestModel(lat: lat, lon: lon)
+      let loadingVC = LoadingViewController()
+      loadingVC.modalPresentationStyle = .overFullScreen
+      present(loadingVC, animated: false)
+      WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
+        guard let self = self else { return }
+        let cllLocation = CLLocation(latitude: lat, longitude: lon)
+        geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
+          guard let placemarks = placemarks else { return }
+          guard let address = placemarks.first else { return }
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            loadingVC.dismiss(animated: false)
+            self.percentageLabel.text = "\(humidity)%"
+            self.lastUpdateLabel.text = self.viewModel.currentTime
+            self.humidity = humidity
+            self.updateBackgroundColor()
+            self.collectionView.reloadData()
+            self.entryVC.dismiss(animated: true)
+            let administrativeArea = address.administrativeArea ?? ""
+            let locality = address.locality ?? ""
+            let subLocality = address.subLocality ?? ""
+            let text = administrativeArea + " " + locality + " " + subLocality
+            self.currentLocationLabel.text = text
+          }
         }
       }
 
@@ -512,7 +492,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       self.locationManager.stopUpdatingLocation()
     }
   }
-
+  
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print(error.localizedDescription)
   }
@@ -530,18 +510,6 @@ extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
     isHiddenCollectionView()
-  }
-}
-
-extension Measure {
-  fileprivate struct Home {
-    static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
-    static let waterDropsMinSize: CGFloat = Measure(regular: 10, medium: 10, small: 5, tiny: 5).forScreen
-    static let waterDropsMaxSize: CGFloat = Measure(regular: 20, medium: 20, small: 15, tiny: 15).forScreen
-    static let percentageFontSize: CGFloat = Measure(regular: 80, medium: 75, small: 65, tiny: 55).forScreen
-    static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
-    static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
-    static let bookmarkFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
   }
 }
 
