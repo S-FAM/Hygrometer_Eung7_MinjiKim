@@ -88,7 +88,7 @@ open class WaterDropsView: UIView {
   
   public func updateAnimation() {
     isAnimated = false
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
       self.isAnimated = true
       self.addAnimation()
     }

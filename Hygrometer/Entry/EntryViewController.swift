@@ -31,9 +31,9 @@ class EntryViewController: UIViewController {
       minDropSize: Measure.Entry.waterDropsMinSize,
       maxDropSize: Measure.Entry.waterDropsMaxSize,
       minLength: 50,
-      maxLength: 100,
+      maxLength: 80,
       minDuration: 1,
-      maxDuration: 5
+      maxDuration: 3
     )
     
     return view
@@ -61,14 +61,13 @@ class EntryViewController: UIViewController {
     waterDrops.snp.makeConstraints { make in
       make.bottom.equalTo(bearImage.snp.top)
       make.centerX.equalToSuperview()
-      make.width.equalTo(50)
+      make.width.equalTo(30)
       make.height.equalTo(120)
     }
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
       self.waterDrops.addAnimation()
     }
-    
   }
 }
 

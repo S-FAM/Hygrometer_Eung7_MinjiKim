@@ -21,11 +21,13 @@ class HomeViewController: UIViewController {
 
   lazy var backgroundView: UIView = {
     let view = UIView()
-    view.clipsToBounds = true
     view.layer.cornerRadius = 30.0
     view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
     view.backgroundColor = .comfortable
-
+    view.layer.shadowColor = UIColor.black.cgColor
+    view.layer.shadowOffset = CGSize(width: 0, height: 2)
+    view.layer.shadowOpacity = 0.5
+    
     return view
   }()
 
@@ -106,21 +108,21 @@ class HomeViewController: UIViewController {
       minDropSize: Measure.Home.waterDropsMinSize,
       maxDropSize: Measure.Home.waterDropsMaxSize,
       minLength: 50,
-      maxLength: 120,
+      maxLength: 80,
       minDuration: 1,
       maxDuration: 3
     )
-
+    
     return drops
   }()
   lazy var percentageLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.Home.percentageFontSize, weight: .bold)
-
+    
     return label
   }()
-
+  
   lazy var dateLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
@@ -163,7 +165,7 @@ class HomeViewController: UIViewController {
   }()
 
   lazy var collectionView: UICollectionView = {
-    let layout = createLayout()
+    let layout = HomeUtilities().createLayout()
     let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     collectionView.backgroundColor = .white
     collectionView.register(HomeCollectionViewCell.self, forCellWithReuseIdentifier: HomeCollectionViewCell.id)
@@ -220,7 +222,7 @@ class HomeViewController: UIViewController {
     [backgroundView, bookmarkStack, collectionView].forEach {
       view.addSubview($0)
     }
-
+    
     backgroundView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
       make.height.equalTo(UIScreen.main.bounds.height * 0.65)
@@ -279,9 +281,9 @@ class HomeViewController: UIViewController {
     }
     
     waterDrops.snp.makeConstraints { make in
-      make.bottom.equalTo(bearImage.snp.top)
+      make.bottom.equalTo(bearImage.snp.top).offset(-8)
       make.top.equalTo(headerBar.snp.bottom)
-      make.width.equalTo(50)
+      make.width.equalTo(30)
       make.centerX.equalTo(bearImage)
     }
 
@@ -308,29 +310,6 @@ class HomeViewController: UIViewController {
     }
   }
 
-  private func createSection() -> NSCollectionLayoutSection {
-    let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-    let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(0.9))
-    let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 3)
-    group.interItemSpacing = NSCollectionLayoutSpacing.fixed(12.0)
-
-    let section = NSCollectionLayoutSection(group: group)
-    section.interGroupSpacing = 8.0
-    section.orthogonalScrollingBehavior = .groupPaging
-    section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
-
-    return section
-  }
-
-  private func createLayout() -> UICollectionViewCompositionalLayout {
-    let config = UICollectionViewCompositionalLayoutConfiguration()
-    let section = createSection()
-
-    return UICollectionViewCompositionalLayout(section: section, configuration: config)
-  }
-
   private func loadLocation() {
     locationManager.delegate = self
     locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -340,7 +319,6 @@ class HomeViewController: UIViewController {
   
   func updateBackgroundColor() {
     var dropNum: Int = 10
-    print("dd")
     if let humidity = humidity {
       if humidity >= 80 {
         backgroundView.backgroundColor = .veryMosit
@@ -372,12 +350,12 @@ class HomeViewController: UIViewController {
     let loadingVC = LoadingViewController()
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         loadingVC.dismiss(animated: false)
         self.humidity = humidity
+        self.updateBackgroundColor()
         self.percentageLabel.text = "\(humidity)%"
         self.lastUpdateLabel.text = self.viewModel.currentTime
-        self.updateBackgroundColor()
         self.collectionView.reloadData()
         self.locationManager.stopUpdatingLocation()
       }
@@ -439,7 +417,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
     return cell
   }
-
+  
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return viewModel.numberOfItemsInSection
   }
@@ -485,7 +463,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       }
     }
   }
-
+  
   func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
     print(error.localizedDescription)
   }
@@ -503,18 +481,6 @@ extension HomeViewController: CLLocationManagerDelegate {
 extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
-  }
-}
-
-extension Measure {
-  fileprivate struct Home {
-    static let bearImageWidth: CGFloat = Measure(regular: 160, medium: 145, small: 125, tiny: 105).forScreen
-    static let waterDropsMinSize: CGFloat = Measure(regular: 10, medium: 10, small: 5, tiny: 5).forScreen
-    static let waterDropsMaxSize: CGFloat = Measure(regular: 20, medium: 20, small: 15, tiny: 15).forScreen
-    static let percentageFontSize: CGFloat = Measure(regular: 80, medium: 75, small: 65, tiny: 55).forScreen
-    static let dateFontSize: CGFloat = Measure(regular: 15, medium: 14, small: 13, tiny: 12).forScreen
-    static let locationFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
-    static let bookmarkFontSize: CGFloat = Measure(regular: 18, medium: 18, small: 16, tiny: 15).forScreen
   }
 }
 
