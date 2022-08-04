@@ -462,6 +462,7 @@ extension HomeViewController: CLLocationManagerDelegate {
       present(loadingVC, animated: false)
       WeatherServiceManager().load(requestModel: request) { [weak self] humidity in
         guard let self = self else { return }
+        self.humidity = humidity
         let cllLocation = CLLocation(latitude: lat, longitude: lon)
         geocoder.reverseGeocodeLocation(cllLocation, preferredLocale: locale) { placemarks, _ in
           guard let placemarks = placemarks else { return }
@@ -479,17 +480,15 @@ extension HomeViewController: CLLocationManagerDelegate {
             let subLocality = address.subLocality ?? ""
             let text = administrativeArea + " " + locality + " " + subLocality
             self.currentLocationLabel.text = text
+            self.locationManager.stopUpdatingLocation()
           }
         }
       }
-
-      self.percentageLabel.text = "\(humidity)%"
-      self.lastUpdateLabel.text = self.viewModel.currentTime
-      self.humidity = humidity
-      self.updateBackgroundColor()
-      self.collectionView.reloadData()
-      self.entryVC.dismiss(animated: true)
-      self.locationManager.stopUpdatingLocation()
+//      self.percentageLabel.text = "\(humidity)%"
+//      self.lastUpdateLabel.text = self.viewModel.currentTime
+//      self.updateBackgroundColor()
+//      self.collectionView.reloadData()
+//      self.entryVC.dismiss(animated: true)
     }
   }
   

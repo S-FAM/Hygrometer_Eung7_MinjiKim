@@ -13,7 +13,7 @@ class EntryViewController: UIViewController {
   
   private lazy var bearImage: UIImageView = {
     let imageView = UIImageView()
-    imageView.image = #imageLiteral(resourceName: "곰돌이")
+    imageView.image = UIImage(named: "bear")
     imageView.contentMode = .scaleAspectFit
     
     return imageView
