@@ -12,7 +12,7 @@ class HomeCollectionViewCell: UICollectionViewCell {
   // MARK: - Properties
   static let id = "HomeCollectionViewCell"
 
-  private lazy var background: UIView = {
+  lazy var background: UIView = {
     let view = UIView()
     view.backgroundColor = .comfortable
     view.layer.cornerRadius = contentView.bounds.height / 2
