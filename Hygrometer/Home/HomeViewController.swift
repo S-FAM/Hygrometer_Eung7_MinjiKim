@@ -12,17 +12,16 @@ import WaterDrops
 
 class HomeViewController: UIViewController {
   // MARK: - Properties
-  let viewModel = HomeListViewModel()
-  var locationManager = CLLocationManager()
-  var currentLocation: Location?
-  var humidity: Int?
-  
-  let entryVC = EntryViewController()
+  private let viewModel = HomeListViewModel()
+  private var locationManager = CLLocationManager()
+  private var humidity: Int?
 
-  lazy var backgroundView: UIView = {
+  private let entryVC = EntryViewController()
+
+  private lazy var backgroundView: UIView = {
     let view = UIView()
     view.layer.cornerRadius = 30.0
-    view.layer.maskedCorners = CACornerMask(arrayLiteral: .layerMinXMaxYCorner, .layerMaxXMaxYCorner)
+    view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
     view.backgroundColor = .comfortable
     view.layer.shadowColor = UIColor.black.cgColor
     view.layer.shadowOffset = CGSize(width: 0, height: 2)
@@ -122,22 +121,20 @@ class HomeViewController: UIViewController {
     
     return label
   }()
-  
-  lazy var dateLabel: UILabel = {
+  private lazy var dateLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
 
-    let now = Date()
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy.MM.dd.E"
-    let str = formatter.string(from: now)
+    let str = formatter.string(from: Date())
     label.text = str
 
     return label
   }()
 
-  lazy var lastUpdateLabel: UILabel = {
+  private lazy var lastUpdateLabel: UILabel = {
     let label = UILabel()
     label.text = " "
     label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .regular)
@@ -146,7 +143,7 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  lazy var bookmarkTitle: UILabel = {
+  private lazy var bookmarkTitle: UILabel = {
     let label = UILabel()
     label.textColor = .black
     label.text = "Bookmark"
@@ -155,13 +152,22 @@ class HomeViewController: UIViewController {
     return label
   }()
 
-  lazy var rightArrowButton: UIButton = {
+  private lazy var rightArrowButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "chevron.forward"), for: .normal)
     button.tintColor = .black
     button.addTarget(self, action: #selector(showBookmarkVC), for: .touchUpInside)
 
     return button
+  }()
+  
+  private lazy var emptyBookmarkLabel: UILabel = {
+    let label = UILabel()
+    label.text = "북마크된 지역이 없습니다."
+    label.textAlignment = .center
+    label.font = .systemFont(ofSize: Measure.Home.dateFontSize, weight: .medium)
+
+    return label
   }()
 
   lazy var collectionView: UICollectionView = {
@@ -175,17 +181,17 @@ class HomeViewController: UIViewController {
 
     return collectionView
   }()
-  
-  lazy var locationAlert: UIAlertController = {
-    let alter = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
+
+  private lazy var locationAlert: UIAlertController = {
+    let alert = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
     let okAction = UIAlertAction(title: "확인", style: .default) { _ in
       UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     let noAction = UIAlertAction(title: "아니오", style: .destructive)
-    alter.addAction(okAction)
-    alter.addAction(noAction)
-    
-    return alter
+    alert.addAction(okAction)
+    alert.addAction(noAction)
+
+    return alert
   }()
 
   // MARK: - LifeCycle
@@ -194,6 +200,7 @@ class HomeViewController: UIViewController {
     showEntryVC()
     configureUI()
     loadLocation()
+    isHiddenCollectionView()
     BookmarkManager.shared.delegate = self
   }
   
@@ -219,7 +226,7 @@ class HomeViewController: UIViewController {
 
     // view
 
-    [backgroundView, bookmarkStack, collectionView].forEach {
+    [backgroundView, bookmarkStack, emptyBookmarkLabel, collectionView].forEach {
       view.addSubview($0)
     }
     
@@ -236,6 +243,11 @@ class HomeViewController: UIViewController {
     collectionView.snp.makeConstraints { make in
       make.top.equalTo(bookmarkStack.snp.bottom).offset(8)
       make.leading.trailing.bottom.equalToSuperview()
+    }
+
+    emptyBookmarkLabel.snp.makeConstraints { make in
+      make.centerX.equalTo(collectionView)
+      make.centerY.equalTo(collectionView).offset(-20)
     }
 
     // backgroundView
@@ -340,14 +352,15 @@ class HomeViewController: UIViewController {
     waterDrops.dropNum = dropNum
     waterDrops.updateAnimation()
   }
-  
+
   private func updateHumidity(location: Location) {
     currentLocationLabel.text = location.location
-    
+
     let lat = CLLocationDegrees(location.lon)!
     let lon = CLLocationDegrees(location.lat)!
     let requestModel = WeatherRequestModel(lat: lat, lon: lon)
     let loadingVC = LoadingViewController()
+
     WeatherServiceManager().load(requestModel: requestModel) { [weak self] humidity in
       guard let self = self else { return }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -360,16 +373,24 @@ class HomeViewController: UIViewController {
         self.locationManager.stopUpdatingLocation()
       }
     }
+
     loadingVC.modalPresentationStyle = .overFullScreen
     present(loadingVC, animated: false)
   }
-  
+
   private func checkLocationAuthorization() {
     switch locationManager.authorizationStatus {
     case .denied:
       present(self.locationAlert, animated: true)
-    default:
-      break
+    default: break
+    }
+  }
+
+  private func isHiddenCollectionView() {
+    if viewModel.numberOfItemsInSection == 0 {
+      collectionView.isHidden = true
+    } else {
+      collectionView.isHidden = false
     }
   }
   
@@ -421,7 +442,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return viewModel.numberOfItemsInSection
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     updateHumidity(location: viewModel.bookmarks[indexPath.row])
   }
@@ -461,6 +482,14 @@ extension HomeViewController: CLLocationManagerDelegate {
           }
         }
       }
+
+      self.percentageLabel.text = "\(humidity)%"
+      self.lastUpdateLabel.text = self.viewModel.currentTime
+      self.humidity = humidity
+      self.updateBackgroundColor()
+      self.collectionView.reloadData()
+      self.entryVC.dismiss(animated: true)
+      self.locationManager.stopUpdatingLocation()
     }
   }
   
@@ -472,8 +501,7 @@ extension HomeViewController: CLLocationManagerDelegate {
     switch manager.authorizationStatus {
     case .denied:
       checkLocationAuthorization()
-    default:
-      break
+    default: break
     }
   }
 }
@@ -481,6 +509,7 @@ extension HomeViewController: CLLocationManagerDelegate {
 extension HomeViewController: BookmarkManagerDelegate {
   func updateCollectionView() {
     collectionView.reloadData()
+    isHiddenCollectionView()
   }
 }
 

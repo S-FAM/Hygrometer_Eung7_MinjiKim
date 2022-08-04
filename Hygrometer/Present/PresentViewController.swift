@@ -29,6 +29,12 @@ class PresentViewController: UIViewController {
     return view
   }()
 
+  private lazy var headerBar: UIView = {
+    let view = UIView()
+
+    return view
+  }()
+
   private lazy var closeButton: UIButton = {
     let button = UIButton()
     button.setImage(UIImage(systemName: "xmark"), for: .normal)
@@ -62,8 +68,12 @@ class PresentViewController: UIViewController {
     tableView.backgroundColor = .clear
     tableView.showsVerticalScrollIndicator = false
     tableView.keyboardDismissMode = .onDrag
+
     tableView.dataSource = self
     tableView.delegate = self
+    tableView.dragDelegate = self
+    tableView.dropDelegate = self
+
     tableView.register(PresentTableViewCell.self, forCellReuseIdentifier: PresentTableViewCell.identifier)
 
     return tableView
@@ -79,8 +89,8 @@ class PresentViewController: UIViewController {
   }()
 
   private var sceneType: SceneType
-  
-  let bookmarkManager = BookmarkManager.shared
+
+  private let bookmarkManager = BookmarkManager.shared
   weak var delegate: PresentViewControllerDelegate?
 
   private var regionList: [Location] = []
@@ -88,6 +98,8 @@ class PresentViewController: UIViewController {
   private var keyword = ""
   private var currentPage: Int = 1
   private let display: Int = 10
+
+  private let inset: CGFloat = 8
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -122,22 +134,32 @@ class PresentViewController: UIViewController {
       make.leading.trailing.bottom.equalToSuperview()
     }
 
-    [closeButton, searchBar, titleLabel, emptyLabel, tableView].forEach {
+    [headerBar, searchBar, emptyLabel, tableView].forEach {
       containerView.addSubview($0)
     }
 
-    let inset: CGFloat = 8
+    headerBar.snp.makeConstraints { make in
+      make.top.leading.trailing.equalToSuperview().inset(inset)
+      make.height.equalTo(50)
+    }
+
+    [closeButton, titleLabel].forEach {
+      headerBar.addSubview($0)
+    }
 
     closeButton.snp.makeConstraints { make in
       make.width.height.equalTo(50)
       make.top.trailing.equalToSuperview().inset(inset)
+      make.centerY.equalToSuperview()
     }
 
-    [searchBar, titleLabel].forEach {
-      $0.snp.makeConstraints { make in
-        make.top.equalTo(closeButton.snp.bottom)
-        make.leading.trailing.equalToSuperview().inset(inset)
-      }
+    titleLabel.snp.makeConstraints { make in
+      make.center.equalToSuperview()
+    }
+
+    searchBar.snp.makeConstraints { make in
+      make.top.equalTo(headerBar.snp.bottom)
+      make.leading.trailing.equalToSuperview().inset(inset)
     }
 
     [emptyLabel, tableView].forEach {
@@ -152,15 +174,25 @@ class PresentViewController: UIViewController {
     switch sceneType {
     case .searh:
       searchBar.becomeFirstResponder()
-      searchBar.isHidden = false
+      tableView.dragInteractionEnabled = false
       titleLabel.isHidden = true
       emptyLabel.text = "검색 결과가 없습니다."
 
     case .bookmark:
+      tableView.dragInteractionEnabled = true
       searchBar.isHidden = true
-      titleLabel.isHidden = false
       emptyLabel.text = "북마크한 지역이 없습니다."
-      isHiddenEmptyLabel(dataCount: BookmarkManager.shared.bookmarks.count)
+      isHiddenEmptyLabel(dataCount: bookmarkManager.bookmarks.count)
+
+      headerBar.snp.remakeConstraints { make in
+        make.top.leading.trailing.equalToSuperview().inset(inset)
+        make.height.equalTo(100)
+      }
+
+      tableView.snp.remakeConstraints { make in
+        make.top.equalTo(headerBar.snp.bottom).offset(inset)
+        make.leading.trailing.bottom.equalToSuperview()
+      }
     }
   }
 
@@ -169,6 +201,7 @@ class PresentViewController: UIViewController {
     topFadeView.addGestureRecognizer(tapGesture)
   }
 
+  /// Search for a region.
   private func requestRegionList(isReset: Bool) {
     if isReset {
       regionList = []
@@ -200,13 +233,11 @@ class PresentViewController: UIViewController {
   }
 }
 
+// MARK: - UITabaleView
+
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if sceneType == .searh {
-      return regionList.count
-    } else {
-      return BookmarkManager.shared.bookmarks.count
-    }                                         
+    return sceneType == .searh ? regionList.count : bookmarkManager.bookmarks.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -217,14 +248,12 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     if sceneType == .searh {
       cell.sceneType = .searh
       cell.setupLocation(location: regionList[indexPath.row])
-      cell.setupUI()
     } else {
-      cell.sceneType =  .bookmark
-      let bookmarks = BookmarkManager.shared.bookmarks
-      cell.setupLocation(location: bookmarks[indexPath.row])
-      cell.setupUI()
+      cell.sceneType = .bookmark
+      cell.setupLocation(location: bookmarkManager.bookmarks[indexPath.row])
     }
-    
+
+    cell.setupUI()
     cell.onChangedBookmarks = {
       tableView.reloadData()
     }
@@ -238,21 +267,47 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
 
     requestRegionList(isReset: false)
   }
-  
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if sceneType == .bookmark {
-      let location = bookmarkManager.bookmarks[indexPath.row]
-      dismiss(animated: true) {
-        self.delegate?.didTapLocation(location: location)
-      }
-    } else {
-      let location = regionList[indexPath.row]
-      dismiss(animated: true) {
-        self.delegate?.didTapLocation(location: location)
-      }
+    let row = indexPath.row
+    let location = sceneType == .searh ? regionList[row] : bookmarkManager.bookmarks[row]
+    dismiss(animated: true) { [weak self] in
+      self?.delegate?.didTapLocation(location: location)
     }
   }
+
+  /// Required for sorting bookmarks.
+  func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    var bookmarks = bookmarkManager.bookmarks
+    let location = bookmarks[sourceIndexPath.row]
+
+    bookmarks.remove(at: sourceIndexPath.row)
+    bookmarks.insert(location, at: destinationIndexPath.row)
+
+    BookmarkManager.shared.removeBookmark(index: sourceIndexPath.row)
+    BookmarkManager.shared.insertBookmark(location: location, index: destinationIndexPath.row)
+  }
 }
+
+// MARK: - UITableView Drag & Drop
+
+extension PresentViewController: UITableViewDragDelegate, UITableViewDropDelegate {
+  /// Required for draging rows.
+  func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+    return [UIDragItem(itemProvider: NSItemProvider())]
+  }
+
+  func tableView(_ tableView: UITableView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
+    if session.localDragSession != nil {
+      return UITableViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
+    }
+    return UITableViewDropProposal(operation: .cancel, intent: .unspecified)
+  }
+
+  func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {}
+}
+
+// MARK: - UISearchBar
 
 extension PresentViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -260,7 +315,7 @@ extension PresentViewController: UISearchBarDelegate {
 
     guard let searchText = searchBar.text else { return }
 
-    self.keyword = searchText
+    keyword = searchText
     requestRegionList(isReset: true)
   }
 }

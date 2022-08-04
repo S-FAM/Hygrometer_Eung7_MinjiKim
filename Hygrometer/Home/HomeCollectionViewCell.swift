@@ -22,8 +22,8 @@ class HomeCollectionViewCell: UICollectionViewCell {
 
     return view
   }()
-  
-  lazy var locationLabel: UILabel = {
+
+  private lazy var locationLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
     label.font = .systemFont(ofSize: Measure.HomeCell.locationFontSize, weight: .semibold)

@@ -9,7 +9,7 @@ import UIKit
 
 class PresentTableViewCell: UITableViewCell {
   static let identifier = "PresentTableViewCell"
-  let bookmarkManager = BookmarkManager.shared
+  private let bookmarkManager = BookmarkManager.shared
   var sceneType: SceneType = .bookmark
 
   private lazy var roundRectangleView: UIView = {
@@ -19,7 +19,7 @@ class PresentTableViewCell: UITableViewCell {
     view.layer.shadowColor = UIColor.gray.cgColor
     view.layer.shadowOpacity = 0.2
     view.layer.shadowRadius = 8.0
-    view.layer.shadowOffset = CGSize(width: 0, height: 0)
+    view.layer.shadowOffset = CGSize.zero
 
     return view
   }()
@@ -53,13 +53,13 @@ class PresentTableViewCell: UITableViewCell {
     selectionStyle = .none
 
     titleLabel.text = location.location
-    
-    if BookmarkManager.shared.bookmarks.contains(where: { $0.id == location.id }) {
+
+    if bookmarkManager.bookmarks.contains(where: { $0.id == location.id }) {
       bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
     } else {
       bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
     }
-    
+
     [roundRectangleView, titleLabel, bookmarkButton].forEach {
       contentView.addSubview($0)
     }
@@ -88,16 +88,13 @@ class PresentTableViewCell: UITableViewCell {
     guard let location = location else { return }
 
     if starImage == UIImage(systemName: "star") {
-      BookmarkManager.shared.insertBookmark(location: location)
+      bookmarkManager.insertBookmark(location: location)
       bookmarkButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
     } else {
-      BookmarkManager.shared.removeBookmark(location: location)
-      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
-    }
-    
-    if sceneType == .bookmark {
       bookmarkManager.removeBookmark(location: location)
-      onChangedBookmarks()
+      bookmarkButton.setImage(UIImage(systemName: "star"), for: .normal)
+
+      if sceneType == .bookmark { onChangedBookmarks() }
     }
   }
 }

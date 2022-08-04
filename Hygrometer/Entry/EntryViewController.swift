@@ -43,7 +43,7 @@ class EntryViewController: UIViewController {
     super.viewDidLoad()
     setupUI()
   }
-  
+
   func setupUI() {
     view.backgroundColor = .gray
     
