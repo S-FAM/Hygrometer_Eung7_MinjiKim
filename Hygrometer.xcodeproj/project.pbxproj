@@ -7,23 +7,74 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */; };
+		A508BB5D287A560300A37162 /* PresentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB5C287A560300A37162 /* PresentViewController.swift */; };
+		A508BB64287A5C8D00A37162 /* PresentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB63287A5C8D00A37162 /* PresentTableViewCell.swift */; };
+		A508BB66287A6B4300A37162 /* SceneType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB65287A6B4300A37162 /* SceneType.swift */; };
+		A508BB68287A768A00A37162 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB67287A768A00A37162 /* SettingsViewController.swift */; };
+		A508BB6B287A7AA600A37162 /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */; };
 		A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081DE2871BF5A00A8D648 /* AppDelegate.swift */; };
 		A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E02871BF5A00A8D648 /* SceneDelegate.swift */; };
-		A51081E32871BF5A00A8D648 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* ViewController.swift */; };
-		A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E42871BF5A00A8D648 /* Main.storyboard */; };
+		A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51081E22871BF5A00A8D648 /* HomeViewController.swift */; };
 		A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A51081E72871BF5C00A8D648 /* Assets.xcassets */; };
 		A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */; };
+		A51081F42871C12200A8D648 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F32871C12200A8D648 /* Alamofire */; };
+		A51081F72871C12E00A8D648 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = A51081F62871C12E00A8D648 /* SnapKit */; };
+		A540D8BA28900F1000B53A7E /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = A540D8B928900F1000B53A7E /* Measure.swift */; };
+		A57D2D27287D9729005EA7CA /* AddressResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D26287D9729005EA7CA /* AddressResponseModel.swift */; };
+		A57D2D29287D9731005EA7CA /* AddressRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D28287D9731005EA7CA /* AddressRequestModel.swift */; };
+		A57D2D2C287D99B4005EA7CA /* AddressSearchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */; };
+		A5CF83082884376B00514958 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CF83072884376B00514958 /* UserDefaultsManager.swift */; };
+		A5E8EA892886EC5600AF9158 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8EA882886EC5600AF9158 /* EntryViewController.swift */; };
+		E5340E85289BF3C10030A44F /* Measure+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5340E84289BF3C10030A44F /* Measure+Extensions.swift */; };
+		E5340E87289BF3F60030A44F /* HomeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5340E86289BF3F60030A44F /* HomeUtilities.swift */; };
+		E58131AD288F5784000DB8C9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131AC288F5784000DB8C9 /* LoadingViewController.swift */; };
+		E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */; };
+		E595611D2885A5F70074E677 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595611C2885A5F70074E677 /* BookmarkManager.swift */; };
+		E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */; };
+		E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */; };
+		E5A2E6C72879A52A00C9D5EB /* HomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */; };
+		E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = E5B151932871C8610028EFAE /* .swiftlint.yml */; };
+		E5C2E4D9287DBEC60022C532 /* WeatherServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2E4D8287DBEC60022C532 /* WeatherServiceManager.swift */; };
+		E5C2E4DB287DBF430022C532 /* WeatherResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2E4DA287DBF430022C532 /* WeatherResponseModel.swift */; };
+		E5C2E4DD287DC1380022C532 /* WeatherRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2E4DC287DC1380022C532 /* WeatherRequestModel.swift */; };
+		E5C2E4DF287DC24F0022C532 /* SECRET.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C2E4DE287DC24F0022C532 /* SECRET.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hygrometer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.debug.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.debug.xcconfig"; sourceTree = "<group>"; };
+		A508BB5C287A560300A37162 /* PresentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentViewController.swift; sourceTree = "<group>"; };
+		A508BB63287A5C8D00A37162 /* PresentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentTableViewCell.swift; sourceTree = "<group>"; };
+		A508BB65287A6B4300A37162 /* SceneType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneType.swift; sourceTree = "<group>"; };
+		A508BB67287A768A00A37162 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
 		A51081DB2871BF5A00A8D648 /* Hygrometer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hygrometer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A51081DE2871BF5A00A8D648 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A51081E02871BF5A00A8D648 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A51081E22871BF5A00A8D648 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A51081E52871BF5A00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A51081E22871BF5A00A8D648 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A51081E72871BF5C00A8D648 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A51081EA2871BF5C00A8D648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A51081EC2871BF5C00A8D648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A540D8B928900F1000B53A7E /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
+		A57D2D26287D9729005EA7CA /* AddressResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressResponseModel.swift; sourceTree = "<group>"; };
+		A57D2D28287D9731005EA7CA /* AddressRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressRequestModel.swift; sourceTree = "<group>"; };
+		A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchManager.swift; sourceTree = "<group>"; };
+		A5CF83072884376B00514958 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		A5E8EA882886EC5600AF9158 /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
+		E5340E84289BF3C10030A44F /* Measure+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Measure+Extensions.swift"; sourceTree = "<group>"; };
+		E5340E86289BF3F60030A44F /* HomeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeUtilities.swift; sourceTree = "<group>"; };
+		E58131AC288F5784000DB8C9 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		E595611C2885A5F70074E677 /* BookmarkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkManager.swift; sourceTree = "<group>"; };
+		E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListViewModel.swift; sourceTree = "<group>"; };
+		E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5B151932871C8610028EFAE /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		E5C2E4D8287DBEC60022C532 /* WeatherServiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherServiceManager.swift; sourceTree = "<group>"; };
+		E5C2E4DA287DBF430022C532 /* WeatherResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponseModel.swift; sourceTree = "<group>"; };
+		E5C2E4DC287DC1380022C532 /* WeatherRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequestModel.swift; sourceTree = "<group>"; };
+		E5C2E4DE287DC24F0022C532 /* SECRET.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SECRET.swift; sourceTree = "<group>"; };
+		E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hygrometer.release.xcconfig"; path = "Target Support Files/Pods-Hygrometer/Pods-Hygrometer.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +82,81 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */,
+				A51081F42871C12200A8D648 /* Alamofire in Frameworks */,
+				A51081F72871C12E00A8D648 /* SnapKit in Frameworks */,
+				05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7133A8999D609617F0FC57BE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				76F69F8DA58FB7EE7F409A76 /* Pods_Hygrometer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A508BB5E287A560900A37162 /* Present */ = {
+			isa = PBXGroup;
+			children = (
+				A508BB5C287A560300A37162 /* PresentViewController.swift */,
+				A508BB63287A5C8D00A37162 /* PresentTableViewCell.swift */,
+				A508BB65287A6B4300A37162 /* SceneType.swift */,
+			);
+			path = Present;
+			sourceTree = "<group>";
+		};
+		A508BB69287A768D00A37162 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A508BB67287A768A00A37162 /* SettingsViewController.swift */,
+				A508BB6A287A7AA600A37162 /* SettingsTableViewCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A508BB6C287A882E00A37162 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E5A2E6C42879955900C9D5EB /* UIColor+Extensions.swift */,
+				E5340E84289BF3C10030A44F /* Measure+Extensions.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		A508BB6D287A89DD00A37162 /* Asset */ = {
+			isa = PBXGroup;
+			children = (
+				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
+			);
+			path = Asset;
+			sourceTree = "<group>";
+		};
+		A508BB6E287A89E300A37162 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A508BB6D287A89DD00A37162 /* Asset */,
+				A508BB6C287A882E00A37162 /* Extension */,
+				A57D2D2D287D99B8005EA7CA /* Manager */,
+				A57D2D2A287D9738005EA7CA /* Model */,
+				A540D8BB28900F1700B53A7E /* UI */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		A51081D22871BF5A00A8D648 = {
 			isa = PBXGroup;
 			children = (
+				E5C2E4DE287DC24F0022C532 /* SECRET.swift */,
+				E5B151932871C8610028EFAE /* .swiftlint.yml */,
 				A51081DD2871BF5A00A8D648 /* Hygrometer */,
 				A51081DC2871BF5A00A8D648 /* Products */,
+				FCC403BD1124B23091AC3389 /* Pods */,
+				7133A8999D609617F0FC57BE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,15 +171,84 @@
 		A51081DD2871BF5A00A8D648 /* Hygrometer */ = {
 			isa = PBXGroup;
 			children = (
+				A508BB6E287A89E300A37162 /* Common */,
+				A5E8EA8A2886EC5900AF9158 /* Entry */,
+				E58131AB288F5776000DB8C9 /* Loading */,
+				E5A2E6C12879925400C9D5EB /* Home */,
+				A508BB5E287A560900A37162 /* Present */,
+				A508BB69287A768D00A37162 /* Settings */,
 				A51081DE2871BF5A00A8D648 /* AppDelegate.swift */,
 				A51081E02871BF5A00A8D648 /* SceneDelegate.swift */,
-				A51081E22871BF5A00A8D648 /* ViewController.swift */,
-				A51081E42871BF5A00A8D648 /* Main.storyboard */,
-				A51081E72871BF5C00A8D648 /* Assets.xcassets */,
 				A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */,
 				A51081EC2871BF5C00A8D648 /* Info.plist */,
 			);
 			path = Hygrometer;
+			sourceTree = "<group>";
+		};
+		A540D8BB28900F1700B53A7E /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				A540D8B928900F1000B53A7E /* Measure.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		A57D2D2A287D9738005EA7CA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A57D2D26287D9729005EA7CA /* AddressResponseModel.swift */,
+				A57D2D28287D9731005EA7CA /* AddressRequestModel.swift */,
+				E5C2E4DA287DBF430022C532 /* WeatherResponseModel.swift */,
+				E5C2E4DC287DC1380022C532 /* WeatherRequestModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A57D2D2D287D99B8005EA7CA /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				A57D2D2B287D99B4005EA7CA /* AddressSearchManager.swift */,
+				A5CF83072884376B00514958 /* UserDefaultsManager.swift */,
+				E5C2E4D8287DBEC60022C532 /* WeatherServiceManager.swift */,
+				E595611C2885A5F70074E677 /* BookmarkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		A5E8EA8A2886EC5900AF9158 /* Entry */ = {
+			isa = PBXGroup;
+			children = (
+				A5E8EA882886EC5600AF9158 /* EntryViewController.swift */,
+			);
+			path = Entry;
+			sourceTree = "<group>";
+		};
+		E58131AB288F5776000DB8C9 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				E58131AC288F5784000DB8C9 /* LoadingViewController.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		E5A2E6C12879925400C9D5EB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A51081E22871BF5A00A8D648 /* HomeViewController.swift */,
+				E5A2E6C22879938A00C9D5EB /* HomeListViewModel.swift */,
+				E5A2E6C62879A52A00C9D5EB /* HomeCollectionViewCell.swift */,
+				E5340E86289BF3F60030A44F /* HomeUtilities.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		FCC403BD1124B23091AC3389 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */,
+				E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,15 +258,23 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A51081EF2871BF5C00A8D648 /* Build configuration list for PBXNativeTarget "Hygrometer" */;
 			buildPhases = (
+				6931BA329901693937441807 /* [CP] Check Pods Manifest.lock */,
 				A51081D72871BF5A00A8D648 /* Sources */,
 				A51081D82871BF5A00A8D648 /* Frameworks */,
 				A51081D92871BF5A00A8D648 /* Resources */,
+				A51081F92871C1D500A8D648 /* SwiftLint */,
+				D33607B657F5D4E49499204D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Hygrometer;
+			packageProductDependencies = (
+				A51081F32871C12200A8D648 /* Alamofire */,
+				A51081F62871C12E00A8D648 /* SnapKit */,
+				E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */,
+			);
 			productName = Hygrometer;
 			productReference = A51081DB2871BF5A00A8D648 /* Hygrometer.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +303,11 @@
 				Base,
 			);
 			mainGroup = A51081D22871BF5A00A8D648;
+			packageReferences = (
+				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
+			);
 			productRefGroup = A51081DC2871BF5A00A8D648 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -125,36 +322,110 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5B151942871C8610028EFAE /* .swiftlint.yml in Resources */,
 				A51081EB2871BF5C00A8D648 /* LaunchScreen.storyboard in Resources */,
 				A51081E82871BF5C00A8D648 /* Assets.xcassets in Resources */,
-				A51081E62871BF5A00A8D648 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6931BA329901693937441807 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hygrometer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A51081F92871C1D500A8D648 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		D33607B657F5D4E49499204D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hygrometer/Pods-Hygrometer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A51081D72871BF5A00A8D648 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A51081E32871BF5A00A8D648 /* ViewController.swift in Sources */,
+				E5340E85289BF3C10030A44F /* Measure+Extensions.swift in Sources */,
+				A51081E32871BF5A00A8D648 /* HomeViewController.swift in Sources */,
+				A5E8EA892886EC5600AF9158 /* EntryViewController.swift in Sources */,
+				A508BB64287A5C8D00A37162 /* PresentTableViewCell.swift in Sources */,
+				E5340E87289BF3F60030A44F /* HomeUtilities.swift in Sources */,
+				A57D2D2C287D99B4005EA7CA /* AddressSearchManager.swift in Sources */,
+				A540D8BA28900F1000B53A7E /* Measure.swift in Sources */,
+				A508BB5D287A560300A37162 /* PresentViewController.swift in Sources */,
+				A508BB68287A768A00A37162 /* SettingsViewController.swift in Sources */,
+				E5A2E6C52879955900C9D5EB /* UIColor+Extensions.swift in Sources */,
+				A5CF83082884376B00514958 /* UserDefaultsManager.swift in Sources */,
+				E5C2E4DF287DC24F0022C532 /* SECRET.swift in Sources */,
 				A51081DF2871BF5A00A8D648 /* AppDelegate.swift in Sources */,
+				A508BB6B287A7AA600A37162 /* SettingsTableViewCell.swift in Sources */,
+				A57D2D27287D9729005EA7CA /* AddressResponseModel.swift in Sources */,
+				A57D2D29287D9731005EA7CA /* AddressRequestModel.swift in Sources */,
 				A51081E12871BF5A00A8D648 /* SceneDelegate.swift in Sources */,
+				A508BB66287A6B4300A37162 /* SceneType.swift in Sources */,
+				E5C2E4D9287DBEC60022C532 /* WeatherServiceManager.swift in Sources */,
+				E5A2E6C32879938A00C9D5EB /* HomeListViewModel.swift in Sources */,
+				E5A2E6C72879A52A00C9D5EB /* HomeCollectionViewCell.swift in Sources */,
+				E595611D2885A5F70074E677 /* BookmarkManager.swift in Sources */,
+				E58131AD288F5784000DB8C9 /* LoadingViewController.swift in Sources */,
+				E5C2E4DD287DC1380022C532 /* WeatherRequestModel.swift in Sources */,
+				E5C2E4DB287DBF430022C532 /* WeatherResponseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A51081E42871BF5A00A8D648 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A51081E52871BF5A00A8D648 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A51081E92871BF5C00A8D648 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -282,6 +553,7 @@
 		};
 		A51081F02871BF5C00A8D648 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 78E5E42E3CBAF2D43EB1CE07 /* Pods-Hygrometer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -290,26 +562,30 @@
 				DEVELOPMENT_TEAM = MZ4WUT4W35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hygrometer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "곰습이";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치서비스 동의가 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alswl.Hygrometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		A51081F12871BF5C00A8D648 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E88BC880D8CB22551EEA7555 /* Pods-Hygrometer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -318,21 +594,24 @@
 				DEVELOPMENT_TEAM = MZ4WUT4W35;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hygrometer/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "곰습이";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치서비스 동의가 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alswl.Hygrometer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -358,6 +637,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A51081F32871C12200A8D648 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		A51081F62871C12E00A8D648 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */;
+			productName = NVActivityIndicatorView;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A51081D32871BF5A00A8D648 /* Project object */;
 }
