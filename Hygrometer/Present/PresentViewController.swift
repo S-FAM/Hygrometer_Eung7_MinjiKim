@@ -175,7 +175,7 @@ class PresentViewController: UIViewController {
 
   private func applySceneType() {
     switch sceneType {
-    case .searh:
+    case .search:
       searchBar.becomeFirstResponder()
       tableView.dragInteractionEnabled = false
       titleLabel.isHidden = true
@@ -240,7 +240,7 @@ class PresentViewController: UIViewController {
 
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sceneType == .searh ? regionList.count : bookmarkManager.bookmarks.count
+    return sceneType == .search ? regionList.count : bookmarkManager.bookmarks.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -248,8 +248,8 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
 
-    if sceneType == .searh {
-      cell.sceneType = .searh
+    if sceneType == .search {
+      cell.sceneType = .search
       cell.setupLocation(location: regionList[indexPath.row])
     } else {
       cell.sceneType = .bookmark
@@ -275,7 +275,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let row = indexPath.row
-    let location = sceneType == .searh ? regionList[row] : bookmarkManager.bookmarks[row]
+    let location = sceneType == .search ? regionList[row] : bookmarkManager.bookmarks[row]
     dismiss(animated: true) { [weak self] in
       self?.delegate?.didTapLocation(location: location)
     }

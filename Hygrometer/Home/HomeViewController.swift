@@ -396,7 +396,7 @@ class HomeViewController: UIViewController {
   
   // MARK: - Selectors
   @objc private func showSearchVC() {
-    let searchVC = PresentViewController(sceneType: .searh)
+    let searchVC = PresentViewController(sceneType: .search)
     searchVC.delegate = self
     present(searchVC, animated: true)
   }
