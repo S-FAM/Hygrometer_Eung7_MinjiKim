@@ -247,7 +247,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
     guard let cell = tableView.dequeueReusableCell(
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
-
+    
     if sceneType == .search {
       cell.sceneType = .search
       cell.setupLocation(location: regionList[indexPath.row])
@@ -255,7 +255,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
       cell.sceneType = .bookmark
       cell.setupLocation(location: bookmarkManager.bookmarks[indexPath.row])
     }
-
+    
     cell.setupUI()
     cell.onChangedBookmarks = { [weak self] in
       guard let self = self else { return }
