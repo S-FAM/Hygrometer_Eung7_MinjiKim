@@ -559,11 +559,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MZ4WUT4W35;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hygrometer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "곰습이";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치서비스 동의가 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "습도 표시를 위한 실시간 위치확인을 위해 권한을 요청할게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "습도 표시를 위한 실시간 위치확인을 위해 권한을 요청할게요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -595,7 +596,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hygrometer/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "곰습이";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "위치서비스 동의가 필요합니다.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "습도 표시를 위한 실시간 위치확인을 위해 권한을 요청할게요.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "습도 표시를 위한 실시간 위치확인을 위해 권한을 요청할게요.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
