@@ -92,5 +92,5 @@
   <br/>
   <br/>
   
-  <a href="https://github.com/minji0801/Modakyi"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fminji0801%2FModakyi&count_bg=%235AAADB&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
+<a href="https://github.com/iOS-PPAK/Hygrometer_Eung7_MinjiKim"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FiOS-PPAK%2FHygrometer_Eung7_MinjiKim&count_bg=%235AAADB&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/></a>
 </div>
