@@ -6,6 +6,7 @@
 //
 
 struct AddressRequestModel: Codable {
-  let key, query, request, type, category: String
+  let query: String
+  let size: Int
   let page: Int
 }

@@ -12,7 +12,7 @@ protocol BookmarkManagerDelegate: AnyObject {
 }
 
 struct Location: Codable {
-  let id: String
+  let id = UUID()
   let lat: String
   let lon: String
   let location: String

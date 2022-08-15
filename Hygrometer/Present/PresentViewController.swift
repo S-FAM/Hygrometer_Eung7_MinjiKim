@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import MapKit
 
 protocol PresentViewControllerDelegate: AnyObject {
   func didTapLocation(location: Location)
@@ -101,6 +102,17 @@ class PresentViewController: UIViewController {
 
   private let inset: CGFloat = 8
   private let disposeBag = DisposeBag()
+  
+  // MARK: - MapKit Properties
+  private var searchCompleter = MKLocalSearchCompleter()
+  private var searchRegion: MKCoordinateRegion = MKCoordinateRegion()
+  private var searchResults = [MKLocalSearchCompletion]()
+  
+  private var places: MKMapItem? {
+    didSet {
+      
+    }
+  }
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
