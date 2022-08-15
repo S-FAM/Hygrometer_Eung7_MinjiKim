@@ -6,6 +6,6 @@
 //
 
 enum SceneType {
-  case searh
+  case search
   case bookmark
 }

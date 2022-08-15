@@ -6,7 +6,8 @@
 //
 
 import UIKit
-import SwiftUI
+import RxSwift
+import RxCocoa
 
 protocol PresentViewControllerDelegate: AnyObject {
   func didTapLocation(location: Location)
@@ -48,7 +49,6 @@ class PresentViewController: UIViewController {
     let searchBar = UISearchBar()
     searchBar.searchBarStyle = .minimal
     searchBar.placeholder = "지역 검색"
-    searchBar.delegate = self
 
     return searchBar
   }()
@@ -100,6 +100,7 @@ class PresentViewController: UIViewController {
   private let display: Int = 10
 
   private let inset: CGFloat = 8
+  private let disposeBag = DisposeBag()
 
   init(sceneType: SceneType) {
     self.sceneType = sceneType
@@ -115,6 +116,27 @@ class PresentViewController: UIViewController {
     setupUI()
     applySceneType()
     setGesture()
+    reactKeyboard()
+  }
+  
+  func reactKeyboard() {
+    searchBar.searchTextField.rx.text
+      .orEmpty
+      .distinctUntilChanged()
+      .asDriver(onErrorJustReturn: "")
+      .drive(onNext: { [weak self] searchText in
+        print(searchText)
+        self?.keyword = searchText
+        self?.requestRegionList(isReset: true)
+      })
+      .disposed(by: disposeBag)
+    
+    searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
+      .asDriver()
+      .drive(onNext: { [weak self] in
+        self?.searchBar.searchTextField.resignFirstResponder()
+      })
+      .disposed(by: disposeBag)
   }
 
   private func setupUI() {
@@ -175,7 +197,7 @@ class PresentViewController: UIViewController {
 
   private func applySceneType() {
     switch sceneType {
-    case .searh:
+    case .search:
       searchBar.becomeFirstResponder()
       tableView.dragInteractionEnabled = false
       titleLabel.isHidden = true
@@ -240,22 +262,22 @@ class PresentViewController: UIViewController {
 
 extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return sceneType == .searh ? regionList.count : bookmarkManager.bookmarks.count
+    return sceneType == .search ? regionList.count : bookmarkManager.bookmarks.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     guard let cell = tableView.dequeueReusableCell(
       withIdentifier: PresentTableViewCell.identifier
     ) as? PresentTableViewCell else { return UITableViewCell() }
-
-    if sceneType == .searh {
-      cell.sceneType = .searh
+    
+    if sceneType == .search {
+      cell.sceneType = .search
       cell.setupLocation(location: regionList[indexPath.row])
     } else {
       cell.sceneType = .bookmark
       cell.setupLocation(location: bookmarkManager.bookmarks[indexPath.row])
     }
-
+    
     cell.setupUI()
     cell.onChangedBookmarks = { [weak self] in
       guard let self = self else { return }
@@ -275,7 +297,7 @@ extension PresentViewController: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let row = indexPath.row
-    let location = sceneType == .searh ? regionList[row] : bookmarkManager.bookmarks[row]
+    let location = sceneType == .search ? regionList[row] : bookmarkManager.bookmarks[row]
     dismiss(animated: true) { [weak self] in
       self?.delegate?.didTapLocation(location: location)
     }
@@ -310,17 +332,4 @@ extension PresentViewController: UITableViewDragDelegate, UITableViewDropDelegat
   }
 
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {}
-}
-
-// MARK: - UISearchBar
-
-extension PresentViewController: UISearchBarDelegate {
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    searchBar.resignFirstResponder()
-
-    guard let searchText = searchBar.text else { return }
-
-    keyword = searchText
-    requestRegionList(isReset: true)
-  }
 }

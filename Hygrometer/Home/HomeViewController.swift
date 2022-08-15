@@ -30,6 +30,7 @@ class HomeViewController: UIViewController {
     return view
   }()
 
+  
   private lazy var headerBar: UIView = {
     let view = UIView()
 
@@ -354,8 +355,6 @@ class HomeViewController: UIViewController {
   }
 
   private func updateHumidity(location: Location) {
-    currentLocationLabel.text = location.location
-
     let lat = CLLocationDegrees(location.lon)!
     let lon = CLLocationDegrees(location.lat)!
     let requestModel = WeatherRequestModel(lat: lat, lon: lon)
@@ -365,6 +364,7 @@ class HomeViewController: UIViewController {
       guard let self = self else { return }
       DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
         loadingVC.dismiss(animated: false)
+        self.currentLocationLabel.text = location.location
         self.humidity = humidity
         self.updateBackgroundColor()
         self.percentageLabel.text = "\(humidity)%"
@@ -373,7 +373,6 @@ class HomeViewController: UIViewController {
         self.locationManager.stopUpdatingLocation()
       }
     }
-
     loadingVC.modalPresentationStyle = .overFullScreen
     present(loadingVC, animated: false)
   }
@@ -396,7 +395,7 @@ class HomeViewController: UIViewController {
   
   // MARK: - Selectors
   @objc private func showSearchVC() {
-    let searchVC = PresentViewController(sceneType: .searh)
+    let searchVC = PresentViewController(sceneType: .search)
     searchVC.delegate = self
     present(searchVC, animated: true)
   }
@@ -484,11 +483,6 @@ extension HomeViewController: CLLocationManagerDelegate {
           }
         }
       }
-//      self.percentageLabel.text = "\(humidity)%"
-//      self.lastUpdateLabel.text = self.viewModel.currentTime
-//      self.updateBackgroundColor()
-//      self.collectionView.reloadData()
-//      self.entryVC.dismiss(animated: true)
     }
   }
   
