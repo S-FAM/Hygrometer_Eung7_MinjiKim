@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "354dda32d89fc8cd4f5c46487f64957d355f53d8",
-        "version" : "5.6.1"
+        "revision" : "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
+        "version" : "5.6.2"
       }
     },
     {
@@ -16,15 +16,6 @@
       "state" : {
         "revision" : "bcb52371f2259254bac6690f92bb474a61768c47",
         "version" : "5.1.1"
-      }
-    },
-    {
-      "identity" : "rxswift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ReactiveX/RxSwift.git",
-      "state" : {
-        "revision" : "b4307ba0b6425c0ba4178e138799946c3da594f8",
-        "version" : "6.5.0"
       }
     },
     {

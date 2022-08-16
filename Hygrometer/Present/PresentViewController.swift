@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 import MapKit
 
 protocol PresentViewControllerDelegate: AnyObject {
@@ -50,6 +48,7 @@ class PresentViewController: UIViewController {
     let searchBar = UISearchBar()
     searchBar.searchBarStyle = .minimal
     searchBar.placeholder = "지역 검색"
+    searchBar.delegate = self
 
     return searchBar
   }()
@@ -101,7 +100,6 @@ class PresentViewController: UIViewController {
   private let display: Int = 10
 
   private let inset: CGFloat = 8
-  private let disposeBag = DisposeBag()
   
   // MARK: - MapKit Properties
   private var searchCompleter = MKLocalSearchCompleter()
@@ -109,9 +107,7 @@ class PresentViewController: UIViewController {
   private var searchResults = [MKLocalSearchCompletion]()
   
   private var places: MKMapItem? {
-    didSet {
-      
-    }
+    didSet {}
   }
 
   init(sceneType: SceneType) {
@@ -128,27 +124,6 @@ class PresentViewController: UIViewController {
     setupUI()
     applySceneType()
     setGesture()
-    reactKeyboard()
-  }
-  
-  func reactKeyboard() {
-    searchBar.searchTextField.rx.text
-      .orEmpty
-      .distinctUntilChanged()
-      .asDriver(onErrorJustReturn: "")
-      .drive(onNext: { [weak self] searchText in
-        print(searchText)
-        self?.keyword = searchText
-        self?.requestRegionList(isReset: true)
-      })
-      .disposed(by: disposeBag)
-    
-    searchBar.searchTextField.rx.controlEvent(.editingDidEndOnExit)
-      .asDriver()
-      .drive(onNext: { [weak self] in
-        self?.searchBar.searchTextField.resignFirstResponder()
-      })
-      .disposed(by: disposeBag)
   }
 
   private func setupUI() {
@@ -344,4 +319,13 @@ extension PresentViewController: UITableViewDragDelegate, UITableViewDropDelegat
   }
 
   func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {}
+}
+
+// MARK: - UISearchBar
+
+extension PresentViewController: UISearchBarDelegate {
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    keyword = searchText
+    requestRegionList(isReset: true)
+  }
 }
