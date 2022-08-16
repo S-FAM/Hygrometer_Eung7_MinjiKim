@@ -30,7 +30,6 @@ class HomeViewController: UIViewController {
     return view
   }()
 
-  
   private lazy var headerBar: UIView = {
     let view = UIView()
 

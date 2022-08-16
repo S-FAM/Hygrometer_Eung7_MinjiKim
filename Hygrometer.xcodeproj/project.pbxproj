@@ -28,7 +28,6 @@
 		A5E8EA892886EC5600AF9158 /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E8EA882886EC5600AF9158 /* EntryViewController.swift */; };
 		E5340E85289BF3C10030A44F /* Measure+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5340E84289BF3C10030A44F /* Measure+Extensions.swift */; };
 		E5340E87289BF3F60030A44F /* HomeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5340E86289BF3F60030A44F /* HomeUtilities.swift */; };
-		E5359AA028A799BF007B161E /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = E5359A9F28A799BF007B161E /* RxCocoa */; };
 		E58131AD288F5784000DB8C9 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58131AC288F5784000DB8C9 /* LoadingViewController.swift */; };
 		E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */ = {isa = PBXBuildFile; productRef = E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */; };
 		E595611D2885A5F70074E677 /* BookmarkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595611C2885A5F70074E677 /* BookmarkManager.swift */; };
@@ -85,7 +84,6 @@
 			files = (
 				E58131B0288F585B000DB8C9 /* NVActivityIndicatorView in Frameworks */,
 				A51081F42871C12200A8D648 /* Alamofire in Frameworks */,
-				E5359AA028A799BF007B161E /* RxCocoa in Frameworks */,
 				A51081F72871C12E00A8D648 /* SnapKit in Frameworks */,
 				05843FBF6DCC44F298530CA9 /* Pods_Hygrometer.framework in Frameworks */,
 			);
@@ -276,7 +274,6 @@
 				A51081F32871C12200A8D648 /* Alamofire */,
 				A51081F62871C12E00A8D648 /* SnapKit */,
 				E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */,
-				E5359A9F28A799BF007B161E /* RxCocoa */,
 			);
 			productName = Hygrometer;
 			productReference = A51081DB2871BF5A00A8D648 /* Hygrometer.app */;
@@ -310,7 +307,6 @@
 				A51081F22871C12200A8D648 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */,
-				E5359A9E28A799BF007B161E /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = A51081DC2871BF5A00A8D648 /* Products */;
 			projectDirPath = "";
@@ -661,14 +657,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		E5359A9E28A799BF007B161E /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 6.5.0;
-			};
-		};
 		E58131AE288F585B000DB8C9 /* XCRemoteSwiftPackageReference "NVActivityIndicatorView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ninjaprox/NVActivityIndicatorView.git";
@@ -689,11 +677,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51081F52871C12E00A8D648 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		E5359A9F28A799BF007B161E /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E5359A9E28A799BF007B161E /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
 		};
 		E58131AF288F585B000DB8C9 /* NVActivityIndicatorView */ = {
 			isa = XCSwiftPackageProductDependency;

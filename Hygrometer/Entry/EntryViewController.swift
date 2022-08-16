@@ -65,7 +65,7 @@ class EntryViewController: UIViewController {
       make.height.equalTo(120)
     }
     
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       self.waterDrops.addAnimation()
     }
   }
