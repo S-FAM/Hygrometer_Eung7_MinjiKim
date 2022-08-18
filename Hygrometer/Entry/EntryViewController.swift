@@ -43,6 +43,13 @@ class EntryViewController: UIViewController {
     super.viewDidLoad()
     setupUI()
   }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+      self?.dismiss(animated: true)
+    }
+  }
 
   func setupUI() {
     view.backgroundColor = .gray

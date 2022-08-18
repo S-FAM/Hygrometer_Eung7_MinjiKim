@@ -183,8 +183,8 @@ class HomeViewController: UIViewController {
   }()
 
   private lazy var locationAlert: UIAlertController = {
-    let alert = UIAlertController(title: "위치 권한 설정 오류", message: "앱 설정 화면으로 가시겠습니까?", preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "확인", style: .default) { _ in
+    let alert = UIAlertController(title: "위치 권한이 거부되었습니다.", message: "허용하러 가시겠습니까? 권한을 거부하셨더라도 지역을 검색하여 앱을 계속 이용하실 수 있습니다.", preferredStyle: .alert)
+    let okAction = UIAlertAction(title: "네", style: .default) { _ in
       UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     let noAction = UIAlertAction(title: "아니오", style: .destructive)
@@ -207,7 +207,6 @@ class HomeViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     checkLocationAuthorization()
-    waterDrops.addAnimation()
   }
 
   // MARK: - Helpers
@@ -337,7 +336,7 @@ class HomeViewController: UIViewController {
         dropNum = 20
       } else if humidity >= 60 {
         backgroundView.backgroundColor = .moist
-        dropNum = 15
+        dropNum = 10
       } else if humidity >= 40 {
         backgroundView.backgroundColor = .comfortable
         dropNum = 5
@@ -471,8 +470,8 @@ extension HomeViewController: CLLocationManagerDelegate {
             self.lastUpdateLabel.text = self.viewModel.currentTime
             self.humidity = humidity
             self.updateBackgroundColor()
+            self.waterDrops.addAnimation()
             self.collectionView.reloadData()
-            self.entryVC.dismiss(animated: true)
             let administrativeArea = address.administrativeArea ?? ""
             let locality = address.locality ?? ""
             let subLocality = address.subLocality ?? ""
